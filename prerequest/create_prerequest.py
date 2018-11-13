@@ -42,16 +42,18 @@ def send_request(url, xml, count_requests):
         f"Время создания {i+1} предзаявок составило: {time.time() - start_time}")
 
 
-
-try:
-    xml_request = open('request.xml', encoding='utf-8').read()
-    server = input_server()
-    port = input_port()
-    count = input_count_of_request()
-    url = 'https://' + server + ':' + port + '/itwCredo/seam/resource/rest/CreateRequestService'
-    send_request(url, xml_request, count)
-except ValueError:
-    print('Не удалось открыть request.xml файл с запросом')
+def request():
+    try:
+        xml_request = open('request.xml', encoding='utf-8').read()
+        server = input_server()
+        port = input_port()
+        count = input_count_of_request()
+        url = 'https://' + server + ':' + port + '/itwCredo/seam/resource/rest/CreateRequestService'
+        send_request(url, xml_request, count)
+    except ValueError:
+        print('Не удалось открыть request.xml файл с запросом')
+    except FileNotFoundError:
+        print('Не удалось найти файл request.xml')
 
 
 
