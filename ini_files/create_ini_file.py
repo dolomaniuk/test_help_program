@@ -1,8 +1,6 @@
 import configparser
 import os
 
-path = "connect_to_base.ini"
-
 
 def create_config(config, path):
     config.add_section("DEFAULT1")
