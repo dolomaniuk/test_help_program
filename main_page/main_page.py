@@ -8,6 +8,7 @@ text = """
 """
 
 from change_connect_settings.change_connect_settings import choice_thing
+from change_request_status.change_status_request import change_status
 
 path = "connect_to_base.ini"
 
@@ -30,8 +31,12 @@ choice = int(input('Выберите один из вариантов\n'))
 
 while switch(choice):
     if case(1):
-        print("Изменить настройки")
+        print("Изменить настройки соединеня")
         choice_thing()
+        break
+    if case(2):
+        print("Изменить статус заявки")
+        change_status()
         break
 
     print("Указали некорректный вариант")
