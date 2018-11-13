@@ -13,7 +13,7 @@ def case(*args):
 
 
 
-def choice_thing()
+def choice_thing():
     path = "connect_to_base.ini"
     print("Текущие настройки:")
     print(*ini.get_config_parameters(path, "DEFAULT"))
@@ -35,13 +35,13 @@ def choice_thing()
             connection_name = ini.get_connections_list(path)
             try:
                 answer = int(input("Укажите номер соединения\n"))
-            except ValueError:
-                answer = 0
-            parameters = ini.get_config_parameters(path, connection_name[answer - 1])
-            ini.update_default_section(path, parameters)
+                parameters = ini.get_config_parameters(path, connection_name[answer - 1])
+                ini.update_default_section(path, parameters)
+            except IndexError:
+                print("Нет сохраненных соединений, либо указали неверный номер")
             break
         if case(3):
-            print("Укажите новые параметры")
+            print("Ввод нового соединения")
             new_section = ini.create_new_section(path)
             ini.update_default_section(path, new_section)
             break
