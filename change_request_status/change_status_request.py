@@ -36,6 +36,9 @@ def update_status():
     while True:
         try:
             idRequest = int(input("Укажите номер заявки\n"))
+            parameters = ini.get_config_parameters('connect_to_base.ini',
+                                                   "DEFAULT")  # получаем параметры соединения
+            my_connection = get_connection(parameters)  # подключаемся к базе
             select_status_request(my_connection[1], str(idRequest))
             new_status = select_status()
             my_connection[1].execute(
