@@ -8,7 +8,7 @@ text = """
 """
 
 from change_connect_settings.change_connect_settings import choice_thing
-# from change_request_status.change_status_request import change_status
+from change_request_status.change_status_request import change_status
 from prerequest.create_prerequest import request
 
 path = "connect_to_base.ini"
