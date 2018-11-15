@@ -119,6 +119,7 @@ def get_connections_list(path):
     sections = config.sections()
     i = 1  # count of connections
     for x in sections:
-        print(f"{i}. {x}", sep='\n')
+        parameters = get_config_parameters(path, x)
+        print(f"{i}. {parameters[0]}\n{parameters[1]}:{parameters[2]}:{parameters[3]} {parameters[4]} {parameters[5]}", sep='\n')
         i += 1
     return sections
