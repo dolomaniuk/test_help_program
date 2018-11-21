@@ -54,6 +54,3 @@ while switch(choice):
         break
     print("Указали некорректный вариант")
     break
-    request()
-    print("Указали некорректный вариант")
-    break
