@@ -28,29 +28,35 @@ def case(*args):
 
 
 print(text)
-print('1. Изменить настройки соединеня\n2. Изменить статус заявки\n3. Создать предзаявку\n4. Карточки клиента')
 # print('1. Изменить настройки соединеня\n2. Изменить статус заявки\n3. Создать предзаявку\n4. Поиск отсутствующих файлов')
-try:
-    choice = int(input('Выберите один из вариантов\n'))
-except ValueError:
-    choice = 0
 
-while switch(choice):
-    if case(1):
-        print("Изменить настройки соединеня")
-        choice_thing()
+while 1:
+    print(
+        '1. Изменить настройки соединеня\n2. Изменить статус заявки\n3. Создать предзаявку\n4. Карточки клиента')
+    try:
+        choice = int(input('Выберите один из вариантов\n'))
+    except ValueError:
+        choice = 0
+    while switch(choice):
+        if case(1):
+            print("Изменить настройки соединеня")
+            choice_thing()
+            print('\n\n')
+            break
+        if case(2):
+            print("Изменить статус заявки")
+            change_status()
+            print('\n\n')
+            break
+        if case(3):
+            print("Создание предзаявки")
+            request()
+            print('\n\n')
+            break
+        if case(4):
+            print("Карточки клиента")
+            send_request_to_SV()
+            print('\n\n')
+            break
+        print("Указали некорректный вариант")
         break
-    if case(2):
-        print("Изменить статус заявки")
-        change_status()
-        break
-    if case(3):
-        print("Создание предзаявки")
-        request()
-        break
-    if case(4):
-        print("Карточки клиента")
-        send_request_to_SV()
-        break
-    print("Указали некорректный вариант")
-    break
