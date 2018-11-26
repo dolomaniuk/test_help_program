@@ -8,7 +8,7 @@ text = """
 """
 
 from change_connect_settings.change_connect_settings import choice_thing
-from change_request_status.change_status_request import change_status
+from db_operations.db_requests import change_status
 from prerequest.create_prerequest import request
 from check_status_card_in_sv.check_status_card_in_sv import send_request_to_SV
 
