@@ -2,14 +2,14 @@ import ini_files.create_ini_file as ini
 
 
 # объявление 2х функций для switch-case
-class switch(object):
+class _switch(object):
     value = None
     def __new__(class_, value):
         class_.value = value
         return True
 
-def case(*args):
-    return any((arg == switch.value for arg in args))
+def _case(*args):
+    return any((arg == _switch.value for arg in args))
 
 
 
@@ -25,12 +25,12 @@ def choice_thing():
     except ValueError:
         answer = 0
 
-    while switch(answer):
-        if case(1):
+    while _switch(answer):
+        if _case(1):
             print("используем текущие настройки")
             parameters = ini.get_config_parameters(path, "DEFAULT")     # получаем параметры соединения
             break
-        if case(2):
+        if _case(2):
             print("Выберите нужное соединение")
             connection_name = ini.get_connections_list(path)
             try:
@@ -40,7 +40,7 @@ def choice_thing():
             except IndexError:
                 print("Нет сохраненных соединений, либо указали неверный номер")
             break
-        if case(3):
+        if _case(3):
             print("Ввод нового соединения")
             new_section = ini.create_new_section(path)
             ini.update_default_section(path, new_section)

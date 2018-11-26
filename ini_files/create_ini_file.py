@@ -2,20 +2,20 @@ import configparser
 import os
 
 
-def create_config(config, path):
+def _create_config(config, path):
     config.add_section("DEFAULT1")
     config.set("DEFAULT1", "SERVER", "192.168.0.1")
     config.set("DEFAULT1", "PORT", "12345")
     config.set("DEFAULT1", "SID", "sid")
     config.set("DEFAULT1", "USERNAME", "username")
     config.set("DEFAULT1", "PASSWORD", "password")
-    write_config(config, path)
+    _write_config(config, path)
 
 
 def get_config(path):
     conf = configparser.ConfigParser()
     if not os.path.exists(path):
-        create_config(conf, path)
+        _create_config(conf, path)
     conf.read(path)
     return conf
 
@@ -40,7 +40,7 @@ def get_setting(path, section, setting):
 def update_setting(path, section, setting, value):
     config = get_config(path)
     config.set(section, setting, value)
-    write_config(config, path)
+    _write_config(config, path)
 
 
 def update_default_section(path, parameters):
@@ -51,65 +51,63 @@ def update_default_section(path, parameters):
     config.set(section, "SID", parameters[3])
     config.set(section, "USERNAME", parameters[4])
     config.set(section, "PASSWORD", parameters[5])
-    write_config(config, path)
+    _write_config(config, path)
     print("Обновили default значения текущими")
 
 
 def create_new_section(path):
     config = get_config(path)
-    section = input_section()
+    section = _input_section()
     config.add_section(section)
-    server = input_server()
+    server = _input_server()
     config.set(section, "SERVER", server)
-    port = input_port()
+    port = _input_port()
     config.set(section, "PORT", port)
-    sid = input_sid()
+    sid = _input_sid()
     config.set(section, "SID", sid)
-    username = input_username()
+    username = _input_username()
     config.set(section, "USERNAME", username)
-    password = input_password()
+    password = _input_password()
     config.set(section, "PASSWORD", password)
-    write_config(config, path)
+    _write_config(config, path)
     print("\nЗаписали новое подключение")
     get_config_parameters(path, section)
     connection_parameters = section, server, port, sid, username, password
     return connection_parameters
 
 
-def write_config(config, path):
+def _write_config(config, path):
     with open(path, "w") as config_file:
         config.write(config_file)
 
 
 # Input connection's parameters
-
-
-def input_section():
+def _input_section():
     section = input("Укажите название соединения):\n").upper()
     return section
 
 
-def input_server():
+def _input_server():
     server = input("Укажите server (пример: 192.168.0.1):\n")
     return server
 
 
-def input_port():
+def _input_port():
     port = input("Укажите port (пример: 1234):\n")
     return port
 
 
-def input_sid():
+def _input_sid():
     sid = input("Укажите SID:\n")
     return sid
 
 
-def input_username():
+def _input_username():
     username = input("Укажите username:\n").lower()
     return username
 
 
-def input_password():
+def _input_password():
     password = input("Укажите password:\n").lower()
     return password
 

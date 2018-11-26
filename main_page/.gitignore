@@ -1,2 +1,3 @@
 *.ini
 /request.xml
+/SV_card_status.xml

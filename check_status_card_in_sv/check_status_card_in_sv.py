@@ -25,7 +25,7 @@ def _get_card_status_from_SV():
 
 
 def send_request_to_SV():
-    tree = et.parse('SV_card_status.xml')
+    tree = et.parse('xml_request\SV_card_status.xml')
     cards_list = get_users_cards()
     for cardNumber in cards_list:
         tree.find('.//parameter[@name="cardNo"]').text = cardNumber
