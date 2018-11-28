@@ -7,8 +7,8 @@ text = """
 ╚╝──╚╝╚╝╚══╝──╚╝────╚═══╝╚╝╚╝
 """
 
+import db_operations.db_requests as db
 from change_connect_settings.change_connect_settings import choice_thing
-from db_operations.db_requests import change_status
 from prerequest.create_prerequest import request
 from check_status_card_in_sv.check_status_card_in_sv import send_request_to_SV
 
@@ -34,8 +34,9 @@ while 1:
         """
         1. Изменить настройки соединеня
         2. Изменить статус заявки
-        3. Создать предзаявку
-        4. Карточки клиента
+        3. Проверить установку обновлений в db
+        4. Создать предзаявку
+        5. Карточки клиента
         """)
     try:
         choice = int(input('Выберите один из вариантов\n'))
@@ -49,15 +50,20 @@ while 1:
             break
         if _case(2):
             print("Изменить статус заявки")
-            change_status()
+            db.change_status()
             print('\n\n')
             break
         if _case(3):
+            print("Проверить установку обновлений в db")
+            db.find_update()
+            print('\n\n')
+            break
+        if _case(4):
             print("Создание предзаявки")
             request()
             print('\n\n')
             break
-        if _case(4):
+        if _case(5):
             print("Карточки клиента")
             send_request_to_SV()
             print('\n\n')
