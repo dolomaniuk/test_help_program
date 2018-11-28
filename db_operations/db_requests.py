@@ -80,8 +80,9 @@ def change_status():
 
 
 # поиск в базе установленного апдейта
-def find_update(script_name):
+def find_update():
     db = My_db_Default()
+    script_name = input("Укажите номер задачи или название скрипта\n")
     request_list = db.query(f"SELECT * FROM databaseupdatehistory WHERE "
         f"upd_version LIKE '%{script_name}%'")
 
