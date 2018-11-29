@@ -21,7 +21,7 @@ def __create_xml_coy():
     tree = et.parse('xml_request\COY_find_info.xml')
     tree.find('.//TerminalTime').text = current_time
     tree.find('.//BankId').text = new_client.set_fp_code()
-    tree.write('COY_find_info.xml')
+    tree.write('xml_request\COY_find_info.xml')
 
 
 def send_coy_request():
