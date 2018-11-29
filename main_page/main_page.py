@@ -11,6 +11,7 @@ import db_operations.db_requests as db
 from change_connect_settings.change_connect_settings import choice_thing
 from prerequest.create_prerequest import request
 from check_status_card_in_sv.check_status_card_in_sv import send_request_to_SV
+from coy.coy_operation import send_coy_request
 
 path = "connect_to_base.ini"
 
@@ -37,6 +38,7 @@ while 1:
         3. Проверить установку обновлений в db
         4. Создать предзаявку
         5. Карточки клиента
+        6. Инфа о клиенте в СОУ
         """)
     try:
         choice = int(input('Выберите один из вариантов\n'))
@@ -66,6 +68,11 @@ while 1:
         if _case(5):
             print("Карточки клиента")
             send_request_to_SV()
+            print('\n\n')
+            break
+        if _case(6):
+            print("Инфа о клиенте в СОУ")
+            send_coy_request()
             print('\n\n')
             break
         print("Указали некорректный вариант")

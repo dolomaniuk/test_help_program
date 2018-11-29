@@ -1,7 +1,7 @@
 import requests
 import urllib3
 import time
-import ini_files.create_ini_file as ini
+import ini_files.ini as ini
 
 urllib3.disable_warnings()  # для обхода ошибки Unverified HTTPS request is being made.
                             #  Adding certificate verification is strongly advised

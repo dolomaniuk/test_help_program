@@ -3,7 +3,7 @@ Database module.
 """
 
 import cx_Oracle
-import ini_files.create_ini_file as ini
+import ini_files.ini as ini
 
 
 class My_db_Default(object):

@@ -1,3 +1,4 @@
 *.ini
 /request.xml
 /SV_card_status.xml
+/COY_find_info.xml

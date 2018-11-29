@@ -1,4 +1,4 @@
-import ini_files.create_ini_file as ini
+import ini_files.ini as ini
 
 
 # объявление 2х функций для switch-case
