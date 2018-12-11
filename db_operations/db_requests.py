@@ -84,7 +84,7 @@ def find_update():
     db = My_db_Default()
     script_name = input("Укажите номер задачи или название скрипта\n")
     request_list = db.query(f"SELECT * FROM databaseupdatehistory WHERE "
-        f"upd_version LIKE '%{script_name}%'")
+                            f"upd_version LIKE '%{script_name}%'")
 
     count_of_rows = request_list.fetchall()  # get list of rows
     if count_of_rows:
@@ -118,3 +118,18 @@ def get_users_cards():
     if not cards_list.keys():
         print("У данного клиента нет активных карточек")
     return cards_list
+
+
+def get_user_fp_code_from_idn():
+    try:
+        idn = input("Укажите идентификационный номер клиента\n")
+        request = "SELECT ppl_code FROM s_people where ppl_perscode = '" + str(idn) + "'"
+        db = My_db_Forpost()
+        response = db.query(request)
+        for i in response:
+            fp_code = str(i[0])
+            break
+    except ValueError:
+        print("Указали неверное значение\n")
+        fp_code = ''
+    return fp_code
