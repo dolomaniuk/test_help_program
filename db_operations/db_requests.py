@@ -97,21 +97,21 @@ def find_update():
 def get_users_cards():
     cards_list = {}
     param = []
+    request = ''
     try:
         idn = input("Укажите идентификационный номер клиента\n")
-        request = """SELECT crd_nr, crd_status, crd_deal_nr
-                      FROM s_card WHERE
-                      crd_deal_nr IN (
-                      SELECT crt_mnemo FROM TABLE
-                      (itw_sca.getAllCardsOfClient('""" + idn + """')))
-                       AND crd_status NOT LIKE 'C' 
-                      ORDER BY crd_status"""
+        with open('sql_requests\cards.sql', 'r+', encoding='utf-8') as sql:
+            for line in sql:
+                request += line.replace("idn", idn)
         db = My_db_Forpost()
+        print('Подождите... формируется писок карточек...')
         response = db.query(request)
         for i in response:
-            param.append(i[1])
-            param.append(i[2])
-            cards_list[i[0]] = param
+            param.append(i[1])          # номер счета
+            param.append(i[2])          # статус в Fp
+            param.append(i[3])          # номер контракта
+            param.append(i[4])          # номер контракта
+            cards_list[i[0]] = param    # номер карточки
             param = []
     except ValueError:
         print("Указали неверное значение\n")
