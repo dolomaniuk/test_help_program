@@ -9,7 +9,7 @@ import ini_files.ini as ini
 class My_db_Default(object):
 
     def __init__(self):
-        parameter = ini.get_config_parameters('connect_to_base.ini', "DEFAULT")
+        parameter = ini.get_config_parameters('connections.ini', "DEFAULT")
         _dbUrl = parameter[4] + '/' + parameter[5] + '@' + parameter[1] + '/' + \
                  parameter[3]
         try:
@@ -27,7 +27,7 @@ class My_db_Default(object):
 
 class My_db_Forpost(My_db_Default):
     def __init__(self):
-        parameter = ini.get_config_parameters('connect_to_base.ini', "FORPOST")
+        parameter = ini.get_config_parameters('connections.ini', "FORPOST")
         _dbUrl = parameter[4] + '/' + parameter[5] + '@' + parameter[1] + '/' + \
                  parameter[3]
         try:
@@ -104,7 +104,7 @@ def get_users_cards():
             for line in sql:
                 request += line.replace("idn", idn)
         db = My_db_Forpost()
-        print('Подождите... формируется писок карточек...')
+        print('Подождите... формируется список карточек...')
         response = db.query(request)
         for i in response:
             param.append(i[1])          # номер счета

@@ -26,7 +26,7 @@ def __create_xml_coy():
 
 def send_coy_request():
     __create_xml_coy()
-    path = "connect_to_base.ini"
+    path = "connections.ini"
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}
     parameters = ini.get_config_parameters(path, 'COY')
     server = parameters[1]

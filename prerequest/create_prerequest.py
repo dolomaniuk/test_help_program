@@ -36,7 +36,7 @@ def _send_request(url, xml, count_requests):
 
 
 def request():
-    path = "connect_to_base.ini"
+    path = "connections.ini"
     try:
         xml_request = open('xml_request\Prerequest.xml', encoding='utf-8').read()
         print("Выберите нужное соединение, где создавать предзаявку")

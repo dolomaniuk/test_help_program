@@ -21,14 +21,19 @@ def get_config(path):
 
 
 def get_config_parameters(path, section):
-    config = get_config(path)
-    server = config.get(section, "SERVER")
-    port = config.get(section, "PORT")
-    sid = config.get(section, "SID")
-    username = config.get(section, "USERNAME")
-    password = config.get(section, "PASSWORD")
-    connection_parameters = section, server, port, sid, username, password
-    return connection_parameters
+    try:
+        config = get_config(path)
+        server = config.get(section, "SERVER")
+        port = config.get(section, "PORT")
+        sid = config.get(section, "SID")
+        username = config.get(section, "USERNAME")
+        password = config.get(section, "PASSWORD")
+        connection_parameters = section, server, port, sid, username, password
+    except configparser.NoSectionError:
+        print("Не удалось определить параметры соединения " + section + "\n")
+        connection_parameters = create_new_section(path)
+    finally:
+        return connection_parameters
 
 def get_setting(path, section, setting):
     conf = get_config(path)
@@ -83,7 +88,7 @@ def _write_config(config, path):
 
 # Input connection's parameters
 def _input_section():
-    section = input("Укажите название соединения):\n").upper()
+    section = input("Укажите название соединения:\n").upper()
     return section
 
 

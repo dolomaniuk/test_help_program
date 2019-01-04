@@ -13,7 +13,7 @@ from prerequest.create_prerequest import request
 from check_status_card_in_sv.check_status_card_in_sv import check_balance_SV_FP, check_status_FP_SV
 from coy.coy_operation import send_coy_request
 
-path = "connect_to_base.ini"
+path = "connections.ini"
 
 
 # объявление 2х функций для switch-case
