@@ -10,7 +10,7 @@ text = """
 import db_operations.db_requests as db
 from change_connect_settings.change_connect_settings import choice_thing
 from prerequest.create_prerequest import request
-from check_status_card_in_sv.check_status_card_in_sv import send_request_to_SV
+from check_status_card_in_sv.check_status_card_in_sv import check_balance_SV_FP, check_status_FP_SV
 from coy.coy_operation import send_coy_request
 
 path = "connect_to_base.ini"
@@ -37,8 +37,9 @@ while 1:
         2. Изменить статус заявки
         3. Проверить установку обновлений в db
         4. Создать предзаявку
-        5. Карточки клиента
-        6. Инфа о клиенте в СОУ
+        5. Статус карточек клиента в SV
+        6. Баланс карточки по номеру договора
+        7. Инфа о клиенте в СОУ
         """)
     try:
         choice = int(input('Выберите один из вариантов\n'))
@@ -66,11 +67,17 @@ while 1:
             print('\n\n')
             break
         if _case(5):
-            print("Карточки клиента")
-            send_request_to_SV()
+            print("Статус карточек клиента в SV")
+            check_status_FP_SV()
+            # check_balance_SV_FP()
             print('\n\n')
             break
         if _case(6):
+            print("Баланс карточки по номеру договора")
+            check_balance_SV_FP()
+            print('\n\n')
+            break
+        if _case(7):
             print("Инфа о клиенте в СОУ")
             send_coy_request()
             print('\n\n')

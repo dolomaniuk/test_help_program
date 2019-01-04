@@ -1,6 +1,7 @@
 import requests
 import urllib3
 from db_operations.db_requests import get_users_cards
+from db_operations.db_requests import get_Fp_card_balance
 from xml.etree import ElementTree as et
 
 urllib3.disable_warnings()  # для обхода ошибки Unverified HTTPS request is being made.
@@ -24,11 +25,29 @@ def _get_card_status_from_SV(xml_file):
     return response
 
 
-def send_request_to_SV():
+def check_status_FP_SV():
     tree_status = et.parse('xml_request\SV_card_status.xml')
     tree_balance = et.parse('xml_request\SV_check_balance.xml')
     cards_list = get_users_cards()
-    print("№ card\t\t\t\t Accaunt \t\t\t\t\t\tcontract\tFp\tSV\tSV_balance\t\tFp_balance")
+    # cards_list = get_Fp_card_balance()
+    print("№ card\t\t\t\t Accaunt \t\t\t\t\t\tcontract\tFp\tSV")
+    for cardNumber in cards_list:
+        tree_status.find('.//parameter[@name="cardNo"]').text = cardNumber
+        tree_status.write('xml_request\SV_card_status.xml')
+        tree_balance.find('.//parameter[@name="2"]').text = cardNumber
+        tree_balance.write('xml_request\SV_check_balance.xml')
+        resp_status = _get_card_status_from_SV('xml_request\SV_card_status.xml').split()[7][18:20:]  # оставляем только код карточки
+        resp_balance = _get_card_status_from_SV('xml_request\SV_check_balance.xml').split()[-5][10:21:]  # оставляем только баланс карточки
+        print(f"{cardNumber}\t{cards_list[cardNumber][0]} \t{cards_list[cardNumber][2]}"
+              f" \t{cards_list[cardNumber][1]} \t{resp_status}")
+
+
+def check_balance_SV_FP():
+    tree_status = et.parse('xml_request\SV_card_status.xml')
+    tree_balance = et.parse('xml_request\SV_check_balance.xml')
+    # cards_list = get_users_cards()
+    cards_list = get_Fp_card_balance()
+    print("№ card\t\t\t\t Accaunt \t\t\t\t\t\tcontract\tFp\tSV\tSV_balance\tFp_balance")
     for cardNumber in cards_list:
         tree_status.find('.//parameter[@name="cardNo"]').text = cardNumber
         tree_status.write('xml_request\SV_card_status.xml')

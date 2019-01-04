@@ -110,13 +110,37 @@ def get_users_cards():
             param.append(i[1])          # номер счета
             param.append(i[2])          # статус в Fp
             param.append(i[3])          # номер контракта
-            param.append(i[4])          # номер контракта
             cards_list[i[0]] = param    # номер карточки
             param = []
     except ValueError:
         print("Указали неверное значение\n")
     if not cards_list.keys():
         print("У данного клиента нет активных карточек")
+    return cards_list
+
+
+def get_Fp_card_balance():
+    cards_list = {}
+    param = []
+    request = ''
+    try:
+        deal_nr = input("Укажите номер контракта\n")
+        with open('sql_requests\Fp_card_balance.sql', 'r+', encoding='utf-8') as sql:
+            for line in sql:
+                request += line.replace("contract_nr", deal_nr)
+        db = My_db_Forpost()
+        response = db.query(request)
+        for i in response:
+            param.append(i[1])          # номер счета
+            param.append(i[2])          # статус в Fp
+            param.append(i[3])          # номер контракта
+            param.append(i[4])          # баланс в Fp
+            cards_list[i[0]] = param    # номер карточки
+            param = []
+    except ValueError:
+        print("Указали неверное значение\n")
+    if not cards_list.keys():
+        print("У данного контракта нет активных карточек")
     return cards_list
 
 
