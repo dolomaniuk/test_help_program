@@ -69,7 +69,6 @@ while 1:
         if _case(5):
             print("Статус карточек клиента в SV")
             check_status_FP_SV()
-            # check_balance_SV_FP()
             print('\n\n')
             break
         if _case(6):
