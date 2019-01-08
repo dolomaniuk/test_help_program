@@ -108,3 +108,4 @@ prerequest/request\.xml
 ini_files/connect_to_base\.ini
 
 \.idea/
+.vscode/settings.json
