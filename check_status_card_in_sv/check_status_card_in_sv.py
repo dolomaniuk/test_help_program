@@ -29,7 +29,6 @@ def _get_card_status_from_SV(xml_file):
 def check_status_FP_SV():
     tree_status = et.parse('xml_request\SV_card_status.xml')
     cards_list = get_users_cards()
-    print("№ card\t\t\t\t Accaunt \t\t\t\t\t\tcontract\tFp\tSV")
     for cardNumber in cards_list:
         tree_status.find('.//parameter[@name="cardNo"]').text = cardNumber
         tree_status.write('xml_request\SV_card_status.xml')
@@ -44,7 +43,6 @@ def check_balance_SV_FP():
     tree_status = et.parse('xml_request\SV_card_status.xml')
     tree_balance = et.parse('xml_request\SV_check_balance.xml')
     cards_list = get_Fp_card_balance()
-    print("№ card\t\t\t\t Accaunt \t\t\t\t\t\tcontract\tFp\tSV\tSV_balance\tFp_balance")
     for cardNumber in cards_list:
         tree_status.find('.//parameter[@name="cardNo"]').text = cardNumber
         tree_status.write('xml_request\SV_card_status.xml')

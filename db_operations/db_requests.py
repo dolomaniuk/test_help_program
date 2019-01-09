@@ -116,6 +116,8 @@ def get_users_cards():
         print("Указали неверное значение\n")
     if not cards_list.keys():
         print("У данного клиента нет активных карточек")
+    else:
+        print("№ card\t\t\t\t Accaunt \t\t\t\t\t\tcontract\tFp\tSV")
     return cards_list
 
 
@@ -141,6 +143,8 @@ def get_Fp_card_balance():
         print("Указали неверное значение\n")
     if not cards_list.keys():
         print("У данного контракта нет активных карточек")
+    else:
+        print("№ card\t\t\t\t Accaunt \t\t\t\t\t\tcontract\tFp\tSV\tSV_balance\tFp_balance")
     return cards_list
 
 
