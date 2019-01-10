@@ -11,7 +11,7 @@ import db_operations.db_requests as db
 import ini_files.ini as ini
 from change_connect_settings.change_connect_settings import choice_thing
 from prerequest.create_prerequest import request
-from check_status_card_in_sv.check_status_card_in_sv import check_balance_SV_FP, check_status_FP_SV
+from check_status_card_in_sv.check_status_card_in_sv import check_balance_SV_FP, check_status_SV
 from coy.coy_operation import send_coy_request
 
 path = "connections.ini"
@@ -70,7 +70,7 @@ while 1:
             break
         if _case(5):
             print("Статус карточек клиента в SV")
-            check_status_FP_SV()
+            check_status_SV()
             print('\n\n')
             break
         if _case(6):

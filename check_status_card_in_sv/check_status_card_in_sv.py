@@ -4,8 +4,11 @@ import urllib3
 from db_operations.db_requests import get_users_cards
 from db_operations.db_requests import get_Fp_card_balance
 from xml.etree import ElementTree as et
+
 urllib3.disable_warnings()  # для обхода ошибки Unverified HTTPS request is being made.
-                            #  Adding certificate verification is strongly advised
+
+
+#  Adding certificate verification is strongly advised
 
 
 def _get_card_status_from_SV(xml_file):
@@ -25,30 +28,34 @@ def _get_card_status_from_SV(xml_file):
     return response
 
 
-def check_status_FP_SV():
-    tree_status = et.parse('xml_request\SV_card_status.xml')
+def manipulation_xml(parse_xml, search_text, card_number, xml_file):
+    parse_xml.find(search_text).text = card_number
+    parse_xml.write('xml_request\'' + xml_file)
+
+
+def check_status_SV():
+    status_xml_file = 'SV_card_status.xml'
+    tree_status = et.parse('xml_request\'' + status_xml_file)
     cards_list = get_users_cards()
     for cardNumber in cards_list:
-        tree_status.find('.//parameter[@name="cardNo"]').text = cardNumber
-        tree_status.write('xml_request\SV_card_status.xml')
-        resp_status = _get_card_status_from_SV('xml_request\SV_card_status.xml').split()[7][18:20:]  # оставляем только код карточки
+        manipulation_xml(tree_status, './/parameter[@name="cardNo"]', cardNumber, status_xml_file)
+        resp_status = _get_card_status_from_SV('xml_request\SV_card_status.xml').split()[7][18:20:]     # код карточки
         cards_list[cardNumber].append(resp_status)
         print(f"{cardNumber}\t{cards_list[cardNumber][0]} \t{cards_list[cardNumber][2]}"
               f" \t{cards_list[cardNumber][1]} \t{resp_status}")
 
 
-
 def check_balance_SV_FP():
-    tree_status = et.parse('xml_request\SV_card_status.xml')
-    tree_balance = et.parse('xml_request\SV_check_balance.xml')
+    status_xml_file = 'xml_request\SV_card_status.xml'
+    balance_xml_file = 'xml_request\SV_check_balance.xml'
+    tree_status = et.parse(status_xml_file)
+    tree_balance = et.parse(balance_xml_file)
     cards_list = get_Fp_card_balance()
     for cardNumber in cards_list:
-        tree_status.find('.//parameter[@name="cardNo"]').text = cardNumber
-        tree_status.write('xml_request\SV_card_status.xml')
-        tree_balance.find('.//parameter[@name="2"]').text = cardNumber
-        tree_balance.write('xml_request\SV_check_balance.xml')
-        resp_status = _get_card_status_from_SV('xml_request\SV_card_status.xml').split()[7][18:20:]  # оставляем только код карточки
-        resp_balance = _get_card_status_from_SV('xml_request\SV_check_balance.xml').split()[-5][10:21:]  # оставляем только баланс карточки
+        manipulation_xml(tree_status, './/parameter[@name="cardNo"]', cardNumber, status_xml_file)
+        manipulation_xml(tree_balance, './/parameter[@name="2"]', cardNumber, balance_xml_file)
+        card_status = _get_card_status_from_SV(status_xml_file).split()[7][18:20:]  # код карточки
+        card_balance = _get_card_status_from_SV(balance_xml_file).split()[-5][10:21:]  # баланс карточки
         print(f"{cardNumber}\t{cards_list[cardNumber][0]} \t{cards_list[cardNumber][2]}"
-              f" \t{cards_list[cardNumber][1]} \t{resp_status} \t{resp_balance}"
+              f" \t{cards_list[cardNumber][1]} \t{card_status} \t{card_balance}"
               f"\t\t{cards_list[cardNumber][3]}  ")
