@@ -5,5 +5,5 @@ ENV PYTHONPATH=/usr/app
 RUN pip install -r requirements.txt
 EXPOSE 80
 COPY . /
-#RUN ls -la /
+RUN ls -la /
 CMD ["python", "main_page/fastQA.py"]
