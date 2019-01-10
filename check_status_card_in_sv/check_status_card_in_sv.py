@@ -34,8 +34,8 @@ def manipulation_xml(parse_xml, search_text, card_number, xml_file):
 
 
 def check_status_SV():
-    status_xml_file = 'SV_card_status.xml'
-    tree_status = et.parse('xml_request\'' + status_xml_file)
+    status_xml_file = 'xml_request\SV_card_status.xml'
+    tree_status = et.parse(status_xml_file)
     cards_list = get_users_cards()
     for cardNumber in cards_list:
         manipulation_xml(tree_status, './/parameter[@name="cardNo"]', cardNumber, status_xml_file)
