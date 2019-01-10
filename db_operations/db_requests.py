@@ -20,9 +20,12 @@ class My_db_Default(object):
 
     def query(self, query):
         try:
-            return self._cursor.execute(query)
+            request = self._cursor.execute(query)
         except:
-            return
+            print("Не удалось выполнить запрос")
+            request = None
+        return request
+
 
     def __del__(self):
         try:
@@ -39,15 +42,18 @@ class My_db_Forpost(My_db_Default):
         try:
             self._connect = cx_Oracle.connect(_dbUrl)
             self._cursor = self._connect.cursor()
-        # except Exception as error:
         except:
-            print('Error: connection not established ')
+            print('Не удалось установить соединение с Forpost')
 
 
 def __select_status_request(db_obj, id):
-    request_list = db_obj.query(
+    try:
+        request_list = db_obj.query(
         f"select id, status from requests where ID = {id}").fetchone()
-    print(request_list)
+        print(request_list)
+    except:
+        print("Не удалось выполнить запрос.")
+        # request_list = ''
 
 
 def __select_status():
@@ -121,6 +127,8 @@ def get_users_cards():
             param = []
     except ValueError:
         print("Указали неверное значение\n")
+    except TypeError:
+        pass
     if not cards_list.keys():
         print("У данного клиента нет активных карточек")
     else:
