@@ -1,18 +1,16 @@
 import time
-import requests
-import ini_files.ini as ini
+
 from xml.etree import ElementTree as et
+import requests
+
+import ini_files.ini as ini
 from db_operations.db_requests import get_user_fp_code_from_idn
 
 
 class Client:
     def get_fp_code(self):
-        self.idn = get_user_fp_code_from_idn()
-        return self.idn
-
-    # def set_fp_code(self):
-    #     self.fp_code = input("Укажите код клиента в Forpost:\n")
-    #     return self.fp_code
+        idn = get_user_fp_code_from_idn()
+        return idn
 
 
 def __create_xml_coy():
@@ -43,6 +41,10 @@ def send_coy_request():
         response = ''
     except FileNotFoundError:
         print('Не удалось найти файл COY_find_info.xml')
+        response = ''
+    except requests.exceptions.ConnectionError:
+        response = ''
+    except requests.exceptions.InvalidURL:
         response = ''
     print(response)
 

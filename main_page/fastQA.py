@@ -8,6 +8,7 @@ text = """
 """
 
 import db_operations.db_requests as db
+import ini_files.ini as ini
 from change_connect_settings.change_connect_settings import choice_thing
 from prerequest.create_prerequest import request
 from check_status_card_in_sv.check_status_card_in_sv import check_balance_SV_FP, check_status_FP_SV
@@ -31,9 +32,10 @@ def _case(*args):
 print(text)
 
 while 1:
+    def_con = ' '.join([*ini.get_config_parameters(path, "DEFAULT")])
     print(
         """
-        1. Изменить настройки соединеня
+        1. Изменить настройки соединеня (""" + def_con + """)
         2. Изменить статус заявки
         3. Проверить установку обновлений в db
         4. Создать предзаявку

@@ -3,13 +3,16 @@ import os
 
 
 def _create_config(config, path):
-    config.add_section("DEFAULT1")
-    config.set("DEFAULT1", "SERVER", "192.168.0.1")
-    config.set("DEFAULT1", "PORT", "12345")
-    config.set("DEFAULT1", "SID", "sid")
-    config.set("DEFAULT1", "USERNAME", "username")
-    config.set("DEFAULT1", "PASSWORD", "password")
+    section = "DEFAULT1"
+    config.add_section(section)
+    config.set(section, "SERVER", "192.168.0.1")
+    config.set(section, "PORT", "12345")
+    config.set(section, "SID", "sid")
+    config.set(section, "USERNAME", "username")
+    config.set(section, "PASSWORD", "password")
     _write_config(config, path)
+    parameters = get_config_parameters(path, section)
+    update_default_section(path, parameters)
 
 
 def get_config(path):
@@ -29,7 +32,7 @@ def get_config_parameters(path, section):
         username = config.get(section, "USERNAME")
         password = config.get(section, "PASSWORD")
         connection_parameters = section, server, port, sid, username, password
-    except configparser.NoSectionError:
+    except :
         print("Не удалось определить параметры соединения " + section + "\n")
         connection_parameters = create_new_section(path)
     finally:
@@ -57,7 +60,7 @@ def update_default_section(path, parameters):
     config.set(section, "USERNAME", parameters[4])
     config.set(section, "PASSWORD", parameters[5])
     _write_config(config, path)
-    print("Обновили default значения текущими")
+    print("Обновили default значения")
 
 
 def create_new_section(path):

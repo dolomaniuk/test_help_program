@@ -3,8 +3,7 @@ import urllib3
 # from prettytable import PrettyTable # для вывода в виде таблицы
 from db_operations.db_requests import get_users_cards
 from db_operations.db_requests import get_Fp_card_balance
-from xml.etree import ElementTree as et
-
+# from xml.etree import ElementTree as et
 urllib3.disable_warnings()  # для обхода ошибки Unverified HTTPS request is being made.
                             #  Adding certificate verification is strongly advised
 

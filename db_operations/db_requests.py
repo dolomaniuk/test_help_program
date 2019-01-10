@@ -15,14 +15,20 @@ class My_db_Default(object):
         try:
             self._connect = cx_Oracle.connect(_dbUrl)
             self._cursor = self._connect.cursor()
-        except Exception as error:
-            print(f'Error: connection not established {error}')
+        except :
+            print('Error: connection not established }')
 
     def query(self, query):
-        return self._cursor.execute(query)
+        try:
+            return self._cursor.execute(query)
+        except:
+            return
 
     def __del__(self):
-        self._connect.close()
+        try:
+            self._connect.close()
+        except:
+            print("Не установилось соединение")
 
 
 class My_db_Forpost(My_db_Default):
@@ -33,8 +39,9 @@ class My_db_Forpost(My_db_Default):
         try:
             self._connect = cx_Oracle.connect(_dbUrl)
             self._cursor = self._connect.cursor()
-        except Exception as error:
-            print(f'Error: connection not established {error}')
+        # except Exception as error:
+        except:
+            print('Error: connection not established ')
 
 
 def __select_status_request(db_obj, id):
@@ -149,15 +156,18 @@ def get_Fp_card_balance():
 
 
 def get_user_fp_code_from_idn():
+    request = ''
     try:
         idn = input("Укажите идентификационный номер клиента\n")
-        request = "SELECT ppl_code FROM s_people where ppl_perscode = '" + str(idn) + "'"
+        with open('sql_requests\ppl_code.sql', 'r+', encoding='utf-8') as sql:
+            for line in sql:
+                request += line.replace("idn", idn)
         db = My_db_Forpost()
         response = db.query(request)
         for i in response:
             fp_code = str(i[0])
             break
-    except ValueError:
+    except:
         print("Указали неверное значение\n")
         fp_code = ''
     return fp_code
