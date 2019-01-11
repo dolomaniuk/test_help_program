@@ -28,7 +28,6 @@ def choice_thing():
     while _switch(answer):
         if _case(1):
             print("используем текущие настройки", end='')
-            # ini.get_config_parameters(path, "DEFAULT")     # получаем параметры соединения
             break
         if _case(2):
             print("Выберите нужное соединение")
@@ -37,13 +36,13 @@ def choice_thing():
                 answer = int(input("Укажите номер соединения\n"))
                 parameters = ini.get_config_parameters(path, connection_name[answer - 1])
                 ini.update_default_section(path, parameters)
+                print("Обновили default значения")
             except IndexError:
                 print("Нет сохраненных соединений, либо указали неверный номер")
             break
         if _case(3):
             print("Ввод нового соединения")
-            new_section = ini.create_new_section(path)
-            # ini.update_default_section(path, new_section)
+            ini.create_new_section(path)
             break
         print("Указали некорректный вариант")
         break
