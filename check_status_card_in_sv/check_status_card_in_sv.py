@@ -27,7 +27,7 @@ def _get_card_status_from_SV(xml_file):
 
 def manipulation_xml(parse_xml, search_text, card_number, xml_file):
     parse_xml.find(search_text).text = card_number
-    parse_xml.write('xml_request\'' + xml_file)
+    parse_xml.write(xml_file)
 
 
 def check_status_SV():
