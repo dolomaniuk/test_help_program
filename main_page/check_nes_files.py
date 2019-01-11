@@ -11,7 +11,9 @@ def check_files():
         ]
     xml_requests = [
         'SV_card_status.xml',
-        'SV_check_balance.xml'
+        'SV_check_balance.xml',
+        'Prerequest.xml',
+        'COY_find_info.xml'
         ]
     err_list = []
     if not os.path.isfile('connections.ini'):
