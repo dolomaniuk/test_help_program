@@ -7,16 +7,15 @@ import ini_files.ini as ini
 
 
 class My_db_Default(object):
-
-    def __init__(self):
-        parameter = ini.get_config_parameters('connections.ini', "DEFAULT")
+    def __init__(self, section):
+        parameter = ini.get_config_parameters('connections.ini', section)
         _dbUrl = parameter[4] + '/' + parameter[5] + '@' + parameter[1] + '/' + \
                  parameter[3]
         try:
             self._connect = cx_Oracle.connect(_dbUrl)
             self._cursor = self._connect.cursor()
-        except :
-            print('Error: connection not established }')
+        except:
+            print('Не удалось установить соединение')
 
     def query(self, query):
         try:
@@ -31,19 +30,7 @@ class My_db_Default(object):
         try:
             self._connect.close()
         except:
-            print("Не установилось соединение")
-
-
-class My_db_Forpost(My_db_Default):
-    def __init__(self):
-        parameter = ini.get_config_parameters('connections.ini', "FORPOST")
-        _dbUrl = parameter[4] + '/' + parameter[5] + '@' + parameter[1] + '/' + \
-                 parameter[3]
-        try:
-            self._connect = cx_Oracle.connect(_dbUrl)
-            self._cursor = self._connect.cursor()
-        except:
-            print('Не удалось установить соединение с Forpost')
+            pass
 
 
 def __select_status_request(db_obj, id):
@@ -74,7 +61,7 @@ def __select_status():
 
 # меняем статус заявки
 def change_status():
-    db = My_db_Default()
+    db = My_db_Default("DEFAULT")
     while True:
         try:
             id_request = int(input("Укажите номер заявки\n"))
@@ -94,7 +81,7 @@ def change_status():
 
 # поиск в базе установленного апдейта
 def find_update():
-    db = My_db_Default()
+    db = My_db_Default("DEFAULT")
     script_name = input("Укажите номер задачи или название скрипта\n")
     request_list = db.query(f"SELECT * FROM databaseupdatehistory WHERE "
                             f"upd_version LIKE '%{script_name}%'")
@@ -113,10 +100,10 @@ def get_users_cards():
     request = ''
     try:
         idn = input("Укажите идентификационный номер клиента\n")
-        with open('sql_requests\cards.sql', 'r+', encoding='utf-8') as sql:
+        with open('sql_requests/cards.sql', 'r+', encoding='utf-8') as sql:
             for line in sql:
                 request += line.replace("idn", idn)
-        db = My_db_Forpost()
+        db = My_db_Default("FORPOST")
         print('Подождите... формируется список карточек...')
         response = db.query(request)
         for i in response:
@@ -142,10 +129,10 @@ def get_Fp_card_balance():
     request = ''
     try:
         deal_nr = input("Укажите номер контракта\n")
-        with open('sql_requests\Fp_card_balance.sql', 'r+', encoding='utf-8') as sql:
+        with open('sql_requests/Fp_card_balance.sql', 'r+', encoding='utf-8') as sql:
             for line in sql:
                 request += line.replace("contract_nr", deal_nr)
-        db = My_db_Forpost()
+        db = My_db_Default("FORPOST")
         response = db.query(request)
         for i in response:
             param.append(i[1])          # номер счета
@@ -167,10 +154,10 @@ def get_user_fp_code_from_idn():
     request = ''
     try:
         idn = input("Укажите идентификационный номер клиента\n")
-        with open('sql_requests\ppl_code.sql', 'r+', encoding='utf-8') as sql:
+        with open('sql_requests/ppl_code.sql', 'r+', encoding='utf-8') as sql:
             for line in sql:
                 request += line.replace("idn", idn)
-        db = My_db_Forpost()
+        db = My_db_Default("FORPOST")
         response = db.query(request)
         for i in response:
             fp_code = str(i[0])
