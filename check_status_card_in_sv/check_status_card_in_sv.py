@@ -4,11 +4,8 @@ import urllib3
 from db_operations.db_requests import get_users_cards
 from db_operations.db_requests import get_Fp_card_balance
 from xml.etree import ElementTree as et
-
 urllib3.disable_warnings()  # для обхода ошибки Unverified HTTPS request is being made.
-
-
-#  Adding certificate verification is strongly advised
+                            #  Adding certificate verification is strongly advised
 
 
 def _get_card_status_from_SV(xml_file):
@@ -40,6 +37,7 @@ def check_status_SV():
     for cardNumber in cards_list:
         manipulation_xml(tree_status, './/parameter[@name="cardNo"]', cardNumber, status_xml_file)
         resp_status = _get_card_status_from_SV('xml_request\SV_card_status.xml').split()[7][18:20:]     # код карточки
+        resp_status = '-' if resp_status == '</' else resp_status
         cards_list[cardNumber].append(resp_status)
         print(f"{cardNumber}\t{cards_list[cardNumber][0]} \t{cards_list[cardNumber][2]}"
               f" \t{cards_list[cardNumber][1]} \t{resp_status}")

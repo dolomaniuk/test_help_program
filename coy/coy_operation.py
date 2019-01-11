@@ -16,10 +16,13 @@ class Client:
 def __create_xml_coy():
     current_time = time.strftime('%Y%m%d%H%M%S')
     new_client = Client()
-    tree = et.parse('xml_request\COY_find_info.xml')
-    tree.find('.//TerminalTime').text = current_time
-    tree.find('.//BankId').text = new_client.get_fp_code()
-    tree.write('xml_request\COY_find_info.xml')
+    try:
+        tree = et.parse('xml_request\COY_find_info.xml')
+        tree.find('.//TerminalTime').text = current_time
+        tree.find('.//BankId').text = new_client.get_fp_code()
+        tree.write('xml_request\COY_find_info.xml')
+    except FileNotFoundError:
+        pass
 
 
 def send_coy_request():
