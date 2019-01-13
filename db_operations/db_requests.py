@@ -4,6 +4,7 @@ Database module.
 
 import cx_Oracle
 import ini_files.ini as ini
+from main_page.client import Client
 
 
 class My_db_Default(object):
@@ -33,6 +34,17 @@ class My_db_Default(object):
             self._connect.close()
         except:
             pass
+
+
+def prepare_sql_file(sql_file, text_for_replase, value):
+    """
+    :return: sql с измененным idn клиента
+    """
+    sql_request = ""
+    with open(sql_file, 'r+', encoding='utf-8') as sql:
+        for line in sql:
+            sql_request.join(line.replace(text_for_replase, value))
+    return sql_request
 
 
 def __select_status_request(db_obj, id):
@@ -101,12 +113,11 @@ def get_users_cards():
     """ Получение списка карточек клиента из БД """
     cards_list = {}
     param = []
-    request = ''
+    sql_file = 'sql_requests/cards.sql'
+    user = Client()
+    idn = user.set_idn()
     try:
-        idn = input("Укажите идентификационный номер клиента\n")
-        with open('sql_requests/cards.sql', 'r+', encoding='utf-8') as sql:
-            for line in sql:
-                request += line.replace("idn", idn)
+        request = prepare_sql_file(sql_file, "idn", idn)
         db = My_db_Default("FORPOST")
         print('Подождите... формируется список карточек...')
         response = db.query(request)
@@ -128,15 +139,13 @@ def get_users_cards():
 
 
 def get_Fp_card_balance():
-    """  получение статуса и баланса карточки в форпост """
+    """  получение списка карточек вместе со статусом и балансом в форпост """
     cards_list = {}
     param = []
-    request = ''
+    sql_file = 'sql_requests/Fp_card_balance.sql'
     try:
         deal_nr = input("Укажите номер контракта\n")
-        with open('sql_requests/Fp_card_balance.sql', 'r+', encoding='utf-8') as sql:
-            for line in sql:
-                request += line.replace("contract_nr", deal_nr)
+        request = prepare_sql_file(sql_file, "contract_nr", deal_nr)
         db = My_db_Default("FORPOST")
         response = db.query(request)
         for i in response:
@@ -157,18 +166,16 @@ def get_Fp_card_balance():
 
 def get_user_fp_code_from_idn():
     """  получение кода форпост через idn клиента """
-    request = ''
+    user = Client()
+    idn = user.set_idn()
+    sql_file = 'sql_requests/ppl_code.sql'
     try:
-        idn = input("Укажите идентификационный номер клиента\n")
-        with open('sql_requests/ppl_code.sql', 'r+', encoding='utf-8') as sql:
-            for line in sql:
-                request += line.replace("idn", idn)
+        request = prepare_sql_file(sql_file, "idn", idn)
         db = My_db_Default("FORPOST")
         response = db.query(request)
         for i in response:
             fp_code = str(i[0])
-            break
     except:
-        print("Указали неверное значение\n")
+        print("Не удалось определить fp_code\n")
         fp_code = ''
     return fp_code

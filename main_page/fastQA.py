@@ -11,7 +11,7 @@ import db_operations.db_requests as db
 import ini_files.ini as ini
 from change_connect_settings.change_connect_settings import choice_thing
 from prerequest.create_prerequest import request
-from check_status_card_in_sv.check_status_card_in_sv import check_balance_SV_FP, check_status_SV
+from check_status_card_in_sv.check_status_card_in_sv import check_balance_status_SV_FP, check_status_SV
 from coy.coy_operation import send_coy_request
 from main_page.check_nes_files import check_files
 
@@ -95,7 +95,7 @@ while 1:
         if _case(6):
             print("Баланс карточки по номеру договора")
             try:
-                check_balance_SV_FP()
+                check_balance_status_SV_FP()
             except:
                 print("Не удалось выполнить команду")
             finally:
