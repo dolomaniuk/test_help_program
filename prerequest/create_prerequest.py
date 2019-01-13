@@ -8,6 +8,7 @@ urllib3.disable_warnings()  # для обхода ошибки Unverified HTTPS 
 
 
 def _input_count_of_request():
+    """  возвращает кол-во создаваемых предзаявок """
     try:
         count_request = int(input("Укажите количество предзаявок\n"))
     except ValueError:
@@ -17,7 +18,8 @@ def _input_count_of_request():
 
 
 def _send_request(url, xml, count_requests):
-    headers = {'Content-Type': 'text/xml'}  # set what your server accepts
+    """  отправка сигнала для создания предзаявки и вывод ответа """
+    headers = {'Content-Type': 'text/xml'}
     start_time = time.time()
     for i in range(count_requests):
         try:
@@ -36,6 +38,8 @@ def _send_request(url, xml, count_requests):
 
 
 def request():
+    """  создание соединения и отправка сигнала для создания предзаявки """
+    #TODO: разделить на несколько ф-ций
     path = "connections.ini"
     try:
         xml_request = open('xml_request\Prerequest.xml', encoding='utf-8').read()

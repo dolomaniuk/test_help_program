@@ -14,6 +14,7 @@ def _case(*args):
 
 
 def choice_thing():
+    """  ф-я выбора значения """
     path = "connections.ini"
     print("Текущие настройки:")
     print(*ini.get_config_parameters(path, "DEFAULT"))

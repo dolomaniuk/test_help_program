@@ -8,12 +8,14 @@ from db_operations.db_requests import get_user_fp_code_from_idn
 
 
 class Client:
+    #TODO: вынести в отдельный класс для клиента и использовать повсеместно
     def get_fp_code(self):
         idn = get_user_fp_code_from_idn()
         return idn
 
 
 def __create_xml_coy():
+    """  перезапись xml с новым кодом клента """
     current_time = time.strftime('%Y%m%d%H%M%S')
     new_client = Client()
     try:
@@ -26,6 +28,8 @@ def __create_xml_coy():
 
 
 def send_coy_request():
+    """  создание соединения, отправка запроса и вывод результата ответа """
+    #TODO: разделить на несколько функций
     __create_xml_coy()
     path = "connections.ini"
     headers = {'Content-Type': 'application/x-www-form-urlencoded'}

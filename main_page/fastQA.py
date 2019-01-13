@@ -23,11 +23,13 @@ class _switch(object):
     value = None
 
     def __new__(class_, value):
+        """ ф-я выбора меню """
         class_.value = value
         return True
 
 
 def _case(*args):
+    """ ф-я возвращает нажатое значение меню """
     return any((arg == _switch.value for arg in args))
 
 

@@ -9,6 +9,7 @@ urllib3.disable_warnings()  # для обхода ошибки Unverified HTTPS 
 
 
 def _get_card_status_from_SV(xml_file):
+    """  отправка сигнала в СВ на получение статуса карточки и вывод результата ответа """
     headers = {'Content-Type': 'text/xml'}  # set what your server accepts
     try:
         xml_request = open(xml_file, encoding='utf-8').read()
@@ -26,11 +27,15 @@ def _get_card_status_from_SV(xml_file):
 
 
 def manipulation_xml(parse_xml, search_text, card_number, xml_file):
+    """  замена номера карточки в xml и его сохранение """\
+
     parse_xml.find(search_text).text = card_number
     parse_xml.write(xml_file)
 
 
 def check_status_SV():
+    """  получение статуса карточки в СВ и вывод на экран """
+
     status_xml_file = 'xml_request\SV_card_status.xml'
     tree_status = et.parse(status_xml_file)
     cards_list = get_users_cards()
@@ -44,6 +49,7 @@ def check_status_SV():
 
 
 def check_balance_SV_FP():
+    """  получение баланса и статуса и в форпост и в смартвиста """
     status_xml_file = 'xml_request\SV_card_status.xml'
     balance_xml_file = 'xml_request\SV_check_balance.xml'
     tree_status = et.parse(status_xml_file)

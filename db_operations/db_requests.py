@@ -7,6 +7,7 @@ import ini_files.ini as ini
 
 
 class My_db_Default(object):
+    """ класс создания подключения к баззе """
     def __init__(self, section):
         parameter = ini.get_config_parameters('connections.ini', section)
         _dbUrl = parameter[4] + '/' + parameter[5] + '@' + parameter[1] + '/' + \
@@ -18,6 +19,7 @@ class My_db_Default(object):
             print('Не удалось установить соединение')
 
     def query(self, query):
+        """ выполнение sql запроса """
         try:
             request = self._cursor.execute(query)
         except:
@@ -34,6 +36,7 @@ class My_db_Default(object):
 
 
 def __select_status_request(db_obj, id):
+    """ выводит статуса заявки """
     try:
         request_list = db_obj.query(
         f"select id, status from requests where ID = {id}").fetchone()
@@ -44,6 +47,7 @@ def __select_status_request(db_obj, id):
 
 
 def __select_status():
+    """  возвращает выбранный статус """
     status = ('START', 'DECISION', 'REJECT_CLIENT', 'EXTERNAL_END', 'END')
     i = 1
     print("Список статусов:")
@@ -59,8 +63,8 @@ def __select_status():
     return status[status_number - 1]
 
 
-# меняем статус заявки
 def change_status():
+    """  обновляет статус заявки в БД """
     db = My_db_Default("DEFAULT")
     while True:
         try:
@@ -79,8 +83,8 @@ def change_status():
             break
 
 
-# поиск в базе установленного апдейта
 def find_update():
+    """  поиск в базе установленного апдейта """
     db = My_db_Default("DEFAULT")
     script_name = input("Укажите номер задачи или название скрипта\n")
     request_list = db.query(f"SELECT * FROM databaseupdatehistory WHERE "
@@ -93,8 +97,8 @@ def find_update():
         print('Не найден апдейт с описанием: ' + script_name)
 
 
-# Получение списка карточек клиента #
 def get_users_cards():
+    """ Получение списка карточек клиента из БД """
     cards_list = {}
     param = []
     request = ''
@@ -124,6 +128,7 @@ def get_users_cards():
 
 
 def get_Fp_card_balance():
+    """  получение статуса и баланса карточки в форпост """
     cards_list = {}
     param = []
     request = ''
@@ -151,6 +156,7 @@ def get_Fp_card_balance():
 
 
 def get_user_fp_code_from_idn():
+    """  получение кода форпост через idn клиента """
     request = ''
     try:
         idn = input("Укажите идентификационный номер клиента\n")

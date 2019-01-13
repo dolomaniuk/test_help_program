@@ -4,6 +4,7 @@ path = input('Enter path with files\n')
 
 
 def find_file(find_file):
+    """  поиск файлов в директории """
     list = []
     for rootdir, dirs, files in os.walk(path):
         for file in files:

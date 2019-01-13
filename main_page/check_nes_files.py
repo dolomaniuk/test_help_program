@@ -2,6 +2,7 @@ import os
 
 
 def check_files():
+    """ проверка наличия необходимых файлов"""
     db_dir = 'sql_requests\\'
     xml_dir = 'xml_request\\'
     db_requests = [
