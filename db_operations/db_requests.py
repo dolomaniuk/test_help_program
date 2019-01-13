@@ -164,10 +164,8 @@ def get_Fp_card_balance():
     return cards_list
 
 
-def get_user_fp_code_from_idn():
+def get_user_fp_code_from_idn(idn):
     """  получение кода форпост через idn клиента """
-    user = Client()
-    idn = user.set_idn()
     sql_file = 'sql_requests/ppl_code.sql'
     try:
         request = prepare_sql_file(sql_file, "idn", idn)

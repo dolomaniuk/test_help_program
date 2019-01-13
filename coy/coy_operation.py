@@ -2,26 +2,25 @@ import time
 
 from xml.etree import ElementTree as et
 import requests
-
+from main_page.client import Client
 import ini_files.ini as ini
 from db_operations.db_requests import get_user_fp_code_from_idn
 
 
-class Client:
-    #TODO: вынести в отдельный класс для клиента и использовать повсеместно
-    def get_fp_code(self):
-        idn = get_user_fp_code_from_idn()
-        return idn
+# class Client:
+#     def get_fp_code(self):
+#         idn = get_user_fp_code_from_idn()
+#         return idn
 
 
 def __create_xml_coy():
     """  перезапись xml с новым кодом клента """
     current_time = time.strftime('%Y%m%d%H%M%S')
-    new_client = Client()
+    user = Client().set_idn()
     try:
         tree = et.parse('xml_request\COY_find_info.xml')
         tree.find('.//TerminalTime').text = current_time
-        tree.find('.//BankId').text = new_client.get_fp_code()
+        tree.find('.//BankId').text = user.get_fp_code()
         tree.write('xml_request\COY_find_info.xml')
     except FileNotFoundError:
         pass
