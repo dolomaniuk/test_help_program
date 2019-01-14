@@ -36,14 +36,14 @@ class My_db_Default(object):
             pass
 
 
-def prepare_sql_file(sql_file, text_for_replase, value):
+def prepare_sql_file(sql_file, text_for_replace, value):
     """
     :return: sql с измененным idn клиента
     """
     sql_request = ""
     with open(sql_file, 'r+', encoding='utf-8') as sql:
         for line in sql:
-            sql_request += line.replace(text_for_replase, value)
+            sql_request += line.replace(text_for_replace, value)
     return sql_request
 
 
@@ -133,8 +133,6 @@ def get_users_cards():
         pass
     if not cards_list.keys():
         print("У данного клиента нет активных карточек")
-    else:
-        print("№ card\t\t\t\t Accaunt \t\t\t\t\t\tcontract\tFp\tSV")
     return cards_list
 
 
@@ -159,8 +157,6 @@ def get_Fp_card_balance():
         print("Указали неверное значение\n")
     if not cards_list.keys():
         print("У данного контракта нет активных карточек")
-    else:
-        print("№ card\t\t\t\t Accaunt \t\t\t\t\t\tcontract\tFp\tSV\tSV_balance\tFp_balance")
     return cards_list
 
 

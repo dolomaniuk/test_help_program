@@ -1,15 +1,15 @@
 import time
-
-from xml.etree import ElementTree as et
-import requests
-from main_page.client import Client
 import ini_files.ini as ini
+from xml.etree import ElementTree as et
+import main_page.xml_requests.xml as my_xml
+from main_page.client import Client
 from db_operations.db_requests import get_user_fp_code_from_idn as get_fp_code
 
 
 def __create_xml_coy():
     """  перезапись xml с новым кодом клента """
     current_time = time.strftime('%Y%m%d%H%M%S')
+    xml_file = 'xml_requests/COY_find_info.xml'
     user = Client()
     idn = user.set_idn()
     fp_code = get_fp_code(idn)
@@ -22,33 +22,31 @@ def __create_xml_coy():
         pass
 
 
+def __get_url_coy():
+    """
+    Получение url СОУ для отправки запроса
+    :return: url
+    """
+    path = "connections.ini"
+    url = ""
+    try:
+        parameters = ini.get_config_parameters(path, 'COY')
+        server = parameters[1]
+        port = parameters[2]
+        sid = parameters[3]
+        url = 'http://' + server + ':' + port + sid
+    except:
+        pass
+    return url
+
 def send_coy_request():
     """  создание соединения, отправка запроса и вывод результата ответа """
-    #TODO: разделить на несколько функций
     __create_xml_coy()
-    path = "connections.ini"
-    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
-    parameters = ini.get_config_parameters(path, 'COY')
-    server = parameters[1]
-    port = parameters[2]
-    sid = parameters[3]
-    url = 'http://' + server + ':' + port + sid
-    print(url)
-    try:
-        xml_request = open('xml_request\COY_find_info.xml', encoding='utf-8').read()
-        param_data = {'xml': xml_request}
-        response = requests.post(url, data=param_data, headers=headers).text
-    except requests.exceptions.HTTPError as err:
-        print('Response is: {content}'.format(content=err.response.content))
-        response = ''
-    except FileNotFoundError:
-        print('Не удалось найти файл COY_find_info.xml')
-        response = ''
-    except requests.exceptions.ConnectionError:
-        response = ''
-    except requests.exceptions.InvalidURL:
-        response = ''
+    url = __get_url_coy()
+    xml = my_xml.xml_read('xml_requests/COY_find_info.xml')
+    response = my_xml.xml_request_coy(url, xml)
     print(response)
+    return response
 
 
 

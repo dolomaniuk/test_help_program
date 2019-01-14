@@ -28,3 +28,34 @@ def xml_request(url, xml):
         except ConnectionRefusedError as error:
             print(f'Oops. Error connection: {error}')
     return response
+
+
+def xml_replace(parse_xml, search_text, value, new_xml):
+    """
+    замена номера карточки в xml и его сохранение
+    parse_xml: распарсенный xml через et.parse(xml_file)
+     """
+    parse_xml.find(search_text).text = value
+    parse_xml.write(new_xml)
+
+
+def xml_request_coy(url, xml):
+    """Возвращает ответ на xml запрос"""
+    param_data = {'xml': xml}
+    response = ""
+    if url != "":
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        try:
+            response = requests.post(url, data=param_data, headers=headers).text
+        except requests.exceptions.HTTPError as error:
+            print(f'Response is: {error.response.content}')
+        except ConnectionRefusedError as error:
+            print(f'Oops. Error connection: {error}')
+        except requests.exceptions.ConnectionError:
+            pass
+        except requests.exceptions.InvalidURL:
+            pass
+    else:
+        print("Не удалось сформировать ссылку для отправки запроса\n"
+              "Проверьте настройки соединения COY")
+    return response
