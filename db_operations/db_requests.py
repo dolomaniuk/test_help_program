@@ -145,6 +145,7 @@ def get_Fp_card_balance():
         deal_nr = input("Укажите номер контракта\n")
         request = prepare_sql_file(sql_file, "contract_nr", deal_nr)
         db = My_db_Default("FORPOST")
+        print('Подождите... формируется таблица с данными...')
         response = db.query(request)
         for i in response:
             param.append(i[1])          # номер счета

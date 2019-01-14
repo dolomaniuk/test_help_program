@@ -37,7 +37,7 @@ def _create_url_for_request():
 def request():
     """  создание соединения и отправка сигнала для создания предзаявки """
     start_time = time.time()
-    xml = xml_read('xml_request/Prerequest.xml')
+    xml = xml_read('xml_requests/Prerequest.xml')
     if xml is not False:
         url = _create_url_for_request()
         count = _input_count_of_request()
