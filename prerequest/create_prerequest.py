@@ -1,7 +1,7 @@
 import urllib3
 import time
 import ini_files.ini as ini
-from main_page.xml_request.xml import xml_read, xml_request
+from main_page.xml_requests.xml import xml_read, xml_request
 
 urllib3.disable_warnings()  # для обхода ошибки Unverified HTTPS request is being made.
                             #  Adding certificate verification is strongly advised

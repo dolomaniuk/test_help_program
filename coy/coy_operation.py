@@ -4,19 +4,15 @@ from xml.etree import ElementTree as et
 import requests
 from main_page.client import Client
 import ini_files.ini as ini
-from db_operations.db_requests import get_user_fp_code_from_idn
-
-
-# class Client:
-#     def get_fp_code(self):
-#         idn = get_user_fp_code_from_idn()
-#         return idn
+from db_operations.db_requests import get_user_fp_code_from_idn as get_fp_code
 
 
 def __create_xml_coy():
     """  перезапись xml с новым кодом клента """
     current_time = time.strftime('%Y%m%d%H%M%S')
-    user = Client().set_idn()
+    user = Client()
+    idn = user.set_idn()
+    fp_code = get_fp_code(idn)
     try:
         tree = et.parse('xml_request\COY_find_info.xml')
         tree.find('.//TerminalTime').text = current_time

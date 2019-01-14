@@ -1,6 +1,5 @@
-import requests
 import urllib3
-from main_page.xml_request.xml import xml_read, xml_request
+from main_page.xml_requests.xml import xml_read, xml_request
 # from prettytable import PrettyTable # для вывода в виде таблицы
 from db_operations.db_requests import get_users_cards
 from db_operations.db_requests import get_Fp_card_balance

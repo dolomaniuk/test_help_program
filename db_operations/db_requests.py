@@ -43,7 +43,7 @@ def prepare_sql_file(sql_file, text_for_replase, value):
     sql_request = ""
     with open(sql_file, 'r+', encoding='utf-8') as sql:
         for line in sql:
-            sql_request.join(line.replace(text_for_replase, value))
+            sql_request += line.replace(text_for_replase, value)
     return sql_request
 
 
