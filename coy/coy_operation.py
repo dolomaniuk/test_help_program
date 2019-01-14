@@ -4,6 +4,7 @@ from xml.etree import ElementTree as et
 import main_page.xml_requests.xml as my_xml
 from main_page.client import Client
 from db_operations.db_requests import get_user_fp_code_from_idn as get_fp_code
+from prettytable import PrettyTable
 
 
 def __create_xml_coy():
@@ -45,8 +46,37 @@ def send_coy_request():
     url = __get_url_coy()
     xml = my_xml.xml_read('xml_requests/COY_find_info.xml')
     response = my_xml.xml_request_coy(url, xml)
-    print(response)
+    user_parameters = parse_response_coy(response)
+    user_table = PrettyTable()
+    column_names = ["Параметр", "Значение"]
+    user_table.add_column(column_names[0], ["Id", "FIO", "Address", "Phone", "Email", "DateOfBirth", "Sex", "BankId",
+                                            "PersonalNo", "Document", "Options"])
+    second_column = []
+    for i in user_parameters:
+        second_column.append(i)
+    user_table.add_column(column_names[1], second_column)
+    print(user_table)
     return response
 
 
+def parse_response_coy(response):
+    """
+    вывод ответа из СОУ в читаемый вид
+    :param response: xml
+    :return: преобразованная инфа из СОУ
+    """
+    xml = et.fromstring(response)
+    Id = xml.find('.//Id').text
+    FIO = xml.find('.//FIO').text
+    Address = xml.find('.//Address').text
+    Phone = xml.find('.//Phone').text
+    Email = xml.find('.//Email').text
+    DateOfBirth = xml.find('.//DateOfBirth').text
+    Sex = xml.find('.//Sex').text
+    BankId = xml.find('.//BankId').text
+    PersonalNo = xml.find('.//PersonalNo').text
+    Document = xml.find('.//Document').text
+    Options = xml.find('.//Options').text
 
+    user = [Id, FIO, Address, Phone, Email, DateOfBirth, Sex, BankId, PersonalNo, Document, Options]
+    return user

@@ -1,6 +1,6 @@
 import urllib3
 import main_page.xml_requests.xml as my_xml
-from prettytable import PrettyTable # для вывода в виде таблицы
+from prettytable import PrettyTable
 from db_operations.db_requests import get_users_cards
 from db_operations.db_requests import get_Fp_card_balance
 from xml.etree import ElementTree as et
