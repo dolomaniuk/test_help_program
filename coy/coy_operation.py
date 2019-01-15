@@ -78,13 +78,19 @@ def parse_response_coy(response):
     FIO = xml.find('.//FIO').text
     Address = xml.find('.//Address').text
     Phone = xml.find('.//Phone').text
-    Email = xml.find('.//Email').text
+    try:
+        Email = xml.find('.//Email').text
+    except:
+        Email = "no email"
     DateOfBirth = xml.find('.//DateOfBirth').text
     Sex = xml.find('.//Sex').text
     BankId = xml.find('.//BankId').text
     PersonalNo = xml.find('.//PersonalNo').text
     Document = xml.find('.//Document').text
-    Options = xml.find('.//Options').text
+    try:
+        Options = xml.find('.//Options').text
+    except:
+        Options = "no options"
 
     user = [Id, FIO, Address, Phone, Email, DateOfBirth, Sex, BankId, PersonalNo, Document, Options]
     log.info("Преобразовали ответ из СОУ в нормальный вид")
