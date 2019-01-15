@@ -1,6 +1,5 @@
 import urllib3
 import time
-import ini_files.ini as ini
 from main_page.xml_requests.xml import xml_read, xml_request
 
 urllib3.disable_warnings()  # для обхода ошибки Unverified HTTPS request is being made.
@@ -19,18 +18,8 @@ def _input_count_of_request():
 
 def _create_url_for_request():
     """ создание url адреса для отправки запроса на создание предзаявки"""
-    path = "connections.ini"
-    print("Выберите нужное соединение, где создавать предзаявку")
-    connection_name = ini.get_connections_list(path)
-    try:
-        answer = int(input("Укажите номер соединения\n"))
-        parameters = ini.get_config_parameters(path, connection_name[answer - 1])
-        server = parameters[1]
-        port = parameters[2]
-        url = 'https://' + server + ':' + port + '/itwCredo/seam/resource/rest/CreateRequestService'
-    except ValueError:
-        print("Нет сохраненных соединений, либо указали неверный номер")
-        url = ""
+    answer = input("Укажите сервер и порт вашего сервера, так как он указан в адресной строке браузера\n")
+    url = 'https://' + answer + '/itwCredo/seam/resource/rest/CreateRequestService'
     return url
 
 
