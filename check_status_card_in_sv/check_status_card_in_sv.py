@@ -52,8 +52,8 @@ def check_status_SV():
         for card_number in cards_list:
             card_status = _get_SV_card_status(card_number)
             cards_list[card_number].append(card_status)
-            cards_table.add_row([card_number, cards_list[card_number][0], cards_list[card_number][2],cards_list[card_number][1], card_status])
-            # print(card_number, cards_list[card_number][0], cards_list[card_number][2],cards_list[card_number][1], card_status)
+            cards_table.add_row([card_number, cards_list[card_number][0], cards_list[card_number][2],
+                                 cards_list[card_number][1], card_status])
         print(cards_table)
 
 

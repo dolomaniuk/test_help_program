@@ -29,14 +29,8 @@ def xml_request(url, xml):
             response = requests.post(url, data=xml.encode('utf-8'), headers=headers,
                                      verify=False).text  # verify=False - для обхода SSL
             log.info("Получили ответ на xml запрос")
-        except requests.exceptions.HTTPError as error:
-            print('Oops. HTTP Error occured')
-            print(f'Response is: {error.response.content}')
-            log.exception(error)
-            log.error(error)
-        except ConnectionRefusedError as error:
-            print(f'Oops. Error connection: {error}')
-            log.exception(error)
+        except:
+            log.exception()
     return response
 
 
@@ -58,18 +52,9 @@ def xml_request_coy(url, xml):
         try:
             response = requests.post(url, data=param_data, headers=headers).text
             log.info("Получили ответ на xml запрос")
-        except requests.exceptions.HTTPError as error:
-            print(f'Response is: {error.response.content}')
-            log.exception(error)
-        except ConnectionRefusedError as error:
-            print(f'Oops. Error connection: {error}')
-            log.exception(error)
-        except requests.exceptions.ConnectionError as error:
+        except:
+            log.exception()
             pass
-            log.exception(error)
-        except requests.exceptions.InvalidURL as error:
-            pass
-            log.exception(error)
     else:
         print("Не удалось сформировать ссылку для отправки запроса\n"
               "Проверьте настройки соединения COY")

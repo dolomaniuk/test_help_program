@@ -11,6 +11,7 @@ from prettytable import PrettyTable
 logging.basicConfig(filename="logs/request.log", filemode="w", level=logging.INFO)
 log = logging.getLogger("coy_operation")
 
+
 def __create_xml_coy():
     """  перезапись xml с новым кодом клента """
     current_time = time.strftime('%Y%m%d%H%M%S')

@@ -6,7 +6,8 @@ text = """
 ║║──║║║║╔═╝║──║║────║╚╝─║║║║║
 ╚╝──╚╝╚╝╚══╝──╚╝────╚═══╝╚╝╚╝
 """
-
+import os
+import platform
 import db_operations.db_requests as db
 import ini_files.ini as ini
 from change_connect_settings.change_connect_settings import choice_thing
@@ -20,7 +21,8 @@ if platform.system() == "Linux":
     os.chdir("/usr/app/main_page")
 
 # создаем каталог и файл для логирования
-#TODO: os.mkdir("logs")
+# TODO:
+os.mkdir("main_page/logs")
 log_file = open("logs/request.log", "w")
 log_file.close()
 
