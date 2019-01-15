@@ -19,9 +19,9 @@ def __create_xml_coy():
     idn = user.set_idn()
     fp_code = get_fp_code(idn)
     try:
-        tree = et.parse('xml_request\COY_find_info.xml')
+        tree = et.parse(xml_file)
         tree.find('.//TerminalTime').text = current_time
-        tree.find('.//BankId').text = user.get_fp_code()
+        tree.find('.//BankId').text = fp_code
         tree.write('xml_request\COY_find_info.xml')
     except FileNotFoundError:
         log.exception(FileNotFoundError)
