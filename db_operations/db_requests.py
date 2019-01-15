@@ -5,7 +5,10 @@ Database module.
 import cx_Oracle
 import ini_files.ini as ini
 from main_page.client import Client
+import logging
 
+logging.basicConfig(filename="logs/request.log", filemode="w", level=logging.INFO)
+log = logging.getLogger("Database")
 
 class My_db_Default(object):
     """ класс создания подключения к баззе """
@@ -16,16 +19,20 @@ class My_db_Default(object):
         try:
             self._connect = cx_Oracle.connect(_dbUrl)
             self._cursor = self._connect.cursor()
+            log.info("Установили соединение к " + section)
         except:
-            print('Не удалось установить соединение')
+            log.exception("Не удалось установить соединение к " + section)
+            print('Не удалось установить соединение к ' + section)
 
     def query(self, query):
         """ выполнение sql запроса """
         try:
             request = self._cursor.execute(query)
+            log.info("Выполнили sql запрос и получили ответ")
         except:
             print("Не удалось выполнить запрос")
             request = None
+            log.exception("Не удалось выполнить sql запрос")
         return request
 
 
@@ -44,6 +51,7 @@ def prepare_sql_file(sql_file, text_for_replace, value):
     with open(sql_file, 'r+', encoding='utf-8') as sql:
         for line in sql:
             sql_request += line.replace(text_for_replace, value)
+        log.info("Прочитали sql запрос из файла: " + sql_file)
     return sql_request
 
 
@@ -170,7 +178,9 @@ def get_user_fp_code_from_idn(idn):
         response = db.query(request)
         for i in response:
             fp_code = str(i[0])
+        log.info("Получили fp_code=" + fp_code)
     except:
         print("Не удалось определить fp_code\n")
         fp_code = ''
+        log.exception("Не удалось определить fp_code")
     return fp_code

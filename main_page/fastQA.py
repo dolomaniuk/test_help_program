@@ -16,7 +16,13 @@ from coy.coy_operation import send_coy_request
 from main_page.check_nes_files import check_files
 
 path = "connections.ini"
+if platform.system() == "Linux":
+    os.chdir("/usr/app/main_page")
 
+# создаем каталог и файл для логирования
+#TODO: os.mkdir("logs")
+log_file = open("logs/request.log", "w")
+log_file.close()
 
 # объявление 2х функций для switch-case
 class _switch(object):

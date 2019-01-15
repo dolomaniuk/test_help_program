@@ -1,16 +1,22 @@
 import requests
+import logging
 
+logging.basicConfig(filename="logs/request.log", filemode="w", level=logging.INFO)
+log = logging.getLogger("xml")
 
 def xml_read(xml_file):
     """открытие и чтение xml файла"""
     try:
         xml_request = open(xml_file, encoding='utf-8').read()
+        log.info("Прочитали " + xml_file)
         return xml_request
     except ValueError:
         print('Не удалось открыть ' + xml_file)
+        log.exception(ValueError)
         return False
     except FileNotFoundError:
         print('Не удалось найти ' + xml_file)
+        log.exception(FileNotFoundError)
         return False
 
 
@@ -22,11 +28,15 @@ def xml_request(url, xml):
         try:
             response = requests.post(url, data=xml.encode('utf-8'), headers=headers,
                                      verify=False).text  # verify=False - для обхода SSL
+            log.info("Получили ответ на xml запрос")
         except requests.exceptions.HTTPError as error:
             print('Oops. HTTP Error occured')
             print(f'Response is: {error.response.content}')
+            log.exception(error)
+            log.error(error)
         except ConnectionRefusedError as error:
             print(f'Oops. Error connection: {error}')
+            log.exception(error)
     return response
 
 
@@ -37,7 +47,7 @@ def xml_replace(parse_xml, search_text, value, new_xml):
      """
     parse_xml.find(search_text).text = value
     parse_xml.write(new_xml)
-
+    log.info("Перезаписали xml файл")
 
 def xml_request_coy(url, xml):
     """Возвращает ответ на xml запрос"""
@@ -47,15 +57,21 @@ def xml_request_coy(url, xml):
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
         try:
             response = requests.post(url, data=param_data, headers=headers).text
+            log.info("Получили ответ на xml запрос")
         except requests.exceptions.HTTPError as error:
             print(f'Response is: {error.response.content}')
+            log.exception(error)
         except ConnectionRefusedError as error:
             print(f'Oops. Error connection: {error}')
-        except requests.exceptions.ConnectionError:
+            log.exception(error)
+        except requests.exceptions.ConnectionError as error:
             pass
-        except requests.exceptions.InvalidURL:
+            log.exception(error)
+        except requests.exceptions.InvalidURL as error:
             pass
+            log.exception(error)
     else:
         print("Не удалось сформировать ссылку для отправки запроса\n"
               "Проверьте настройки соединения COY")
+        log.error("Не удалось сформировать ссылку для отправки запроса")
     return response

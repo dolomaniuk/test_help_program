@@ -1,11 +1,15 @@
 import time
 import ini_files.ini as ini
-from xml.etree import ElementTree as et
 import main_page.xml_requests.xml as my_xml
+import logging
+from xml.etree import ElementTree as et
 from main_page.client import Client
 from db_operations.db_requests import get_user_fp_code_from_idn as get_fp_code
 from prettytable import PrettyTable
 
+
+logging.basicConfig(filename="logs/request.log", filemode="w", level=logging.INFO)
+log = logging.getLogger("coy_operation")
 
 def __create_xml_coy():
     """  перезапись xml с новым кодом клента """
@@ -20,6 +24,7 @@ def __create_xml_coy():
         tree.find('.//BankId').text = user.get_fp_code()
         tree.write('xml_request\COY_find_info.xml')
     except FileNotFoundError:
+        log.exception(FileNotFoundError)
         pass
 
 
@@ -36,7 +41,9 @@ def __get_url_coy():
         port = parameters[2]
         sid = parameters[3]
         url = 'http://' + server + ':' + port + sid
+        log.info("Сформировали url для отправки запроса")
     except:
+        log.exception("Формирование url. Не смогли считать параметры")
         pass
     return url
 
@@ -56,6 +63,7 @@ def send_coy_request():
         second_column.append(i)
     user_table.add_column(column_names[1], second_column)
     print(user_table)
+    log.info("Вывели инфу о клиенте")
     return response
 
 
@@ -79,4 +87,5 @@ def parse_response_coy(response):
     Options = xml.find('.//Options').text
 
     user = [Id, FIO, Address, Phone, Email, DateOfBirth, Sex, BankId, PersonalNo, Document, Options]
+    log.info("Преобразовали ответ из СОУ в нормальный вид")
     return user
