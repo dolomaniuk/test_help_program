@@ -18,7 +18,10 @@ def _get_SV_card_status(card_number):
     tree_status = et.parse(xml_file)
     my_xml.xml_replace(tree_status, './/parameter[@name="cardNo"]', card_number, xml_file)
     xml = my_xml.xml_read(xml_file)
-    card_status = my_xml.xml_request(url, xml).split()[7][18:20:]  # код карточки
+    # card_status = my_xml.xml_request(url, xml).split()[7][18:20:]  # код карточки
+    response_sv = my_xml.xml_request(url, xml)
+    xml = et.fromstring(response_sv)
+    card_status = xml.find('.//parameter name="4"').text  # TODO: заменить тег статуса
     return '-' if card_status == '</' else card_status
 
 
@@ -32,8 +35,11 @@ def _get_SV_card_balance(card_number):
     tree_status = et.parse(xml_file)
     my_xml.xml_replace(tree_status, './/parameter[@name="2"]', card_number, xml_file)
     xml = my_xml.xml_read(xml_file)
-    card_status = my_xml.xml_request(url, xml).split()[-5][10:21:]  # баланс карточки
-    return '-' if card_status == '</' else card_status
+    tag = my_xml.xml_request(url, xml).split()[-5]  # баланс карточки
+    start_pos_balance = tag.find("4") + 3
+    end_pos_balance = tag.find("</param")
+    card_balance = float(tag[start_pos_balance:end_pos_balance]) / 100
+    return card_balance
 
 
 def check_status_SV():
