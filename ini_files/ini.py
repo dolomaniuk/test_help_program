@@ -1,5 +1,6 @@
 import configparser
 import os
+from prettytable import PrettyTable
 
 
 def _create_config(config, path):
@@ -124,8 +125,13 @@ def get_connections_list(path):
     config = get_config(path)
     sections = config.sections()
     i = 1  # count of connections
+    connections_list = PrettyTable()
+    connections_list.field_names = ["№", "Name", "Adress", "User"]
     for x in sections:
         parameters = get_config_parameters(path, x)
-        print(f"{i}. {parameters[0]}\n{parameters[1]}:{parameters[2]}:{parameters[3]} {parameters[4]} {parameters[5]}", sep='\n')
+        connections_list.add_row([i], [parameters[0]], [parameters[1], ":", parameters[2], ":", parameters[3]],
+                                 [parameters[4], " ", parameters[5]])
+        # print(f"{i}. {parameters[0]}\n{parameters[1]}:{parameters[2]}:{parameters[3]} {parameters[4]} {parameters[5]}", sep='\n')
         i += 1
+    print(connections_list)
     return sections
