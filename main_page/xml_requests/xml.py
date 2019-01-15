@@ -1,8 +1,7 @@
 import requests
-import logging
+from main_page.logging import get_logger
 
-logging.basicConfig(filename="logs/request.log", filemode="w", level=logging.INFO)
-log = logging.getLogger("xml")
+log = get_logger("coy_operation")
 
 def xml_read(xml_file):
     """открытие и чтение xml файла"""

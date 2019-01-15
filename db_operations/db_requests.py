@@ -5,10 +5,10 @@ Database module.
 import cx_Oracle
 import ini_files.ini as ini
 from main_page.client import Client
-import logging
+from main_page.logging import get_logger
 
-logging.basicConfig(filename="logs/request.log", filemode="w", level=logging.INFO)
-log = logging.getLogger("Database")
+log = get_logger("db_requests")
+
 
 class My_db_Default(object):
     """ класс создания подключения к баззе """

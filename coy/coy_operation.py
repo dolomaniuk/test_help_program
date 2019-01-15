@@ -1,15 +1,13 @@
 import time
 import ini_files.ini as ini
 import main_page.xml_requests.xml as my_xml
-import logging
 from xml.etree import ElementTree as et
 from main_page.client import Client
 from db_operations.db_requests import get_user_fp_code_from_idn as get_fp_code
 from prettytable import PrettyTable
+from main_page.logging import get_logger
 
-
-logging.basicConfig(filename="logs/request.log", filemode="w", level=logging.INFO)
-log = logging.getLogger("coy_operation")
+log = get_logger("coy_operation")
 
 
 def __create_xml_coy():

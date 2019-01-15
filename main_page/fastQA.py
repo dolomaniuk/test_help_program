@@ -6,8 +6,17 @@ text = """
 ║║──║║║║╔═╝║──║║────║╚╝─║║║║║
 ╚╝──╚╝╚╝╚══╝──╚╝────╚═══╝╚╝╚╝
 """
+
 import os
 import platform
+
+log_dir = 'logs'
+if not os.path.exists(log_dir):
+    os.makedirs(log_dir)
+
+if platform.system() == "Linux":
+    os.chdir("/usr/app/main_page")
+
 import db_operations.db_requests as db
 import ini_files.ini as ini
 from change_connect_settings.change_connect_settings import choice_thing
@@ -17,14 +26,6 @@ from coy.coy_operation import send_coy_request
 from main_page.check_nes_files import check_files
 
 path = "connections.ini"
-if platform.system() == "Linux":
-    os.chdir("/usr/app/main_page")
-
-# создаем каталог и файл для логирования
-# TODO:
-os.mkdir("main_page/logs")
-log_file = open("logs/request.log", "w")
-log_file.close()
 
 # объявление 2х функций для switch-case
 class _switch(object):

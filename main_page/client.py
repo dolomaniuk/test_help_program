@@ -1,7 +1,7 @@
-import logging
+from main_page.logging import get_logger
 
-logging.basicConfig(filename="logs/request.log", filemode="w", level=logging.INFO)
-log = logging.getLogger("Client")
+log = get_logger("client")
+
 
 class Client(object):
 
