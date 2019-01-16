@@ -4,10 +4,12 @@ Database module.
 
 import cx_Oracle
 import ini_files.ini as ini
+import logging
 from main_page.client import Client
-from main_page.logging import get_logger
 
-log = get_logger("db_requests")
+LOG_FORMAT = "%(asctime)s [%(levelname)s]\t [%(name)s]\t %(message)s"
+logging.basicConfig(filename="logs/request.log", format=LOG_FORMAT, datefmt='%H:%M:%S', filemode="w", level=logging.INFO)
+log = logging.getLogger("db_request")
 
 
 class My_db_Default(object):

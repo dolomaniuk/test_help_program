@@ -1,14 +1,16 @@
 import time
 import ini_files.ini as ini
-import main_page.xml_requests.xml as my_xml
+import main_page.xml_requests.xml_operations as my_xml
+import logging
 from xml.etree import ElementTree as et
 from main_page.client import Client
 from db_operations.db_requests import get_user_fp_code_from_idn as get_fp_code
 from prettytable import PrettyTable
-from main_page.logging import get_logger
 
-log = get_logger("coy_operation")
 
+LOG_FORMAT = "%(asctime)s [%(levelname)s]\t [%(name)s]\t %(message)s"
+logging.basicConfig(filename="logs/request.log", format=LOG_FORMAT, datefmt='%H:%M:%S', filemode="w", level=logging.INFO)
+log = logging.getLogger("coy_operation")
 
 def __create_xml_coy():
     """  перезапись xml с новым кодом клента """

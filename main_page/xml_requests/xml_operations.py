@@ -1,7 +1,9 @@
 import requests
-from main_page.logging import get_logger
+import logging
 
-log = get_logger("coy_operation")
+LOG_FORMAT = "%(asctime)s [%(levelname)s]\t [%(name)s]\t %(message)s"
+logging.basicConfig(filename="logs/request.log", format=LOG_FORMAT, datefmt='%H:%M:%S', filemode="w", level=logging.INFO)
+log = logging.getLogger("xml_operations")
 
 def xml_read(xml_file):
     """открытие и чтение xml файла"""

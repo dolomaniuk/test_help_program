@@ -1,6 +1,8 @@
-from main_page.logging import get_logger
+import logging
 
-log = get_logger("client")
+LOG_FORMAT = "%(asctime)s [%(levelname)s]\t [%(name)s]\t %(message)s"
+logging.basicConfig(filename="logs/request.log", format=LOG_FORMAT, datefmt='%H:%M:%S', filemode="w", level=logging.INFO)
+log = logging.getLogger("client")
 
 
 class Client(object):
