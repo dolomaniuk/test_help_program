@@ -1,6 +1,6 @@
 import urllib3
 import time
-from main_page.xml_requests.xml import xml_read, xml_request
+from main_page.xml_requests.xml_operations import xml_read, xml_request
 
 urllib3.disable_warnings()  # для обхода ошибки Unverified HTTPS request is being made.
                             #  Adding certificate verification is strongly advised
