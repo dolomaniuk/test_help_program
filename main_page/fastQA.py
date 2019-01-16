@@ -7,16 +7,6 @@ text = """
 ╚╝──╚╝╚╝╚══╝──╚╝────╚═══╝╚╝╚╝
 """
 
-import os
-import platform
-
-log_dir = 'logs'
-if not os.path.exists(log_dir):
-    os.makedirs(log_dir)
-
-if platform.system() == "Linux":
-    os.chdir("/usr/app/main_page")
-
 import db_operations.db_requests as db
 import ini_files.ini as ini
 from change_connect_settings.change_connect_settings import choice_thing
