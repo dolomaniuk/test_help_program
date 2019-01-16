@@ -1,5 +1,5 @@
 import urllib3
-import main_page.xml_requests.xml as my_xml
+import main_page.xml_requests.xml_operations as my_xml
 from prettytable import PrettyTable
 from db_operations.db_requests import get_users_cards
 from db_operations.db_requests import get_Fp_card_balance
@@ -8,21 +8,23 @@ from xml.etree import ElementTree as et
 urllib3.disable_warnings()  # для обхода ошибки Unverified HTTPS request is being made.
                             #  Adding certificate verification is strongly advised
 
+STATUS_XML_FILE = 'xml_requests/SV_card_status.xml'
+BALANCE_XML_FILE = 'xml_requests/SV_check_balance.xml'
+URL = 'http://192.168.0.18:18080/itwGateWS/exec/XmlApi'
+
 def _get_SV_card_status(card_number):
     """
     Ф-я отправки запроса в СВ и получения статуса карточки
     :return: статус карточки
     """
-    xml_file = 'xml_requests/SV_card_status.xml'
-    url = 'http://192.168.0.18:18080/itwGateWS/exec/XmlApi'
-    tree_status = et.parse(xml_file)
-    my_xml.xml_replace(tree_status, './/parameter[@name="cardNo"]', card_number, xml_file)
-    xml = my_xml.xml_read(xml_file)
-    # card_status = my_xml.xml_request(url, xml).split()[7][18:20:]  # код карточки
-    response_sv = my_xml.xml_request(url, xml)
-    xml = et.fromstring(response_sv)
-    card_status = xml.find('.//parameter name="4"').text  # TODO: заменить тег статуса
-    return '-' if card_status == '</' else card_status
+    tree_status = et.parse(STATUS_XML_FILE)
+    my_xml.xml_replace(tree_status, './/parameter[@name="cardNo"]', card_number, STATUS_XML_FILE)
+    xml = my_xml.xml_read(STATUS_XML_FILE)
+    response_sv = my_xml.xml_request(URL, xml).split()[7]
+    start_pos_status = response_sv.find('statusCode">') + 12
+    end_pos_status = response_sv.find("</param")
+    card_status = response_sv[start_pos_status:end_pos_status]
+    return '-' if card_status == '' else card_status
 
 
 def _get_SV_card_balance(card_number):
@@ -30,22 +32,19 @@ def _get_SV_card_balance(card_number):
     Ф-я отправки запроса в СВ и получения баланса карточки
     :return: баланс карточки
     """
-    xml_file = 'xml_requests/SV_check_balance.xml'
-    url = 'http://192.168.0.18:18080/itwGateWS/exec/XmlApi'
-    tree_status = et.parse(xml_file)
-    my_xml.xml_replace(tree_status, './/parameter[@name="2"]', card_number, xml_file)
-    xml = my_xml.xml_read(xml_file)
-    tag = my_xml.xml_request(url, xml).split()[-5]  # баланс карточки
-    start_pos_balance = tag.find("4") + 3
-    end_pos_balance = tag.find("</param")
-    card_balance = float(tag[start_pos_balance:end_pos_balance]) / 100
+    tree_status = et.parse(BALANCE_XML_FILE)
+    my_xml.xml_replace(tree_status, './/parameter[@name="2"]', card_number, BALANCE_XML_FILE)
+    xml = my_xml.xml_read(BALANCE_XML_FILE)
+    response_sv = my_xml.xml_request(URL, xml).split()[-5]  # баланс карточки
+    start_pos_balance = response_sv.find("4") + 3
+    end_pos_balance = response_sv.find("</param")
+    card_balance = float(response_sv[start_pos_balance:end_pos_balance]) / 100
     return card_balance
 
 
 def check_status_SV():
     """  Вывод на экран карточек и их параметров """
-    xml_file = 'xml_requests/SV_card_status.xml'
-    if my_xml.xml_read(xml_file):
+    if my_xml.xml_read(STATUS_XML_FILE):
         cards_table = PrettyTable()
         cards_table.field_names = ["card", "accaunt", "contract", "Fp", "SV"]
         cards_list = get_users_cards()
@@ -59,9 +58,7 @@ def check_status_SV():
 
 def check_balance_status_SV_FP():
     """  получение баланса и статуса карточки в форпост и в смартвиста """
-    status_xml_file = 'xml_requests/SV_card_status.xml'
-    balance_xml_file = 'xml_requests/SV_check_balance.xml'
-    if my_xml.xml_read(status_xml_file) and my_xml.xml_read(balance_xml_file):
+    if my_xml.xml_read(STATUS_XML_FILE) and my_xml.xml_read(BALANCE_XML_FILE):
         cards_table = PrettyTable()
         cards_table.field_names = ["card", "accaunt", "contract", "Fp", "SV", "SV_balance", "Fp_balance"]
         cards_list = get_Fp_card_balance()
