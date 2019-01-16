@@ -12,10 +12,11 @@ LOG_FORMAT = "%(asctime)s [%(levelname)s]\t [%(name)s]\t %(message)s"
 logging.basicConfig(filename="logs/request.log", format=LOG_FORMAT, datefmt='%H:%M:%S', filemode="w", level=logging.INFO)
 log = logging.getLogger("coy_operation")
 
+XML_FILE = 'xml_requests/COY_find_info.xml'
+PATH_INI = "connections.ini"
 def __create_xml_coy():
     """  перезапись xml с новым кодом клента """
     current_time = time.strftime('%Y%m%d%H%M%S')
-    xml_file = 'xml_requests/COY_find_info.xml'
     user = Client()
     idn = user.set_idn()
     fp_code = get_fp_code(idn)
@@ -34,10 +35,9 @@ def __get_url_coy():
     Получение url СОУ для отправки запроса
     :return: url
     """
-    path = "connections.ini"
     url = ""
     try:
-        parameters = ini.get_config_parameters(path, 'COY')
+        parameters = ini.get_config_parameters(PATH_INI, 'COY')
         server = parameters[1]
         port = parameters[2]
         sid = parameters[3]
@@ -52,7 +52,7 @@ def send_coy_request():
     """  создание соединения, отправка запроса и вывод результата ответа """
     __create_xml_coy()
     url = __get_url_coy()
-    xml = my_xml.xml_read('xml_requests/COY_find_info.xml')
+    xml = my_xml.xml_read(XML_FILE)
     response = my_xml.xml_request_coy(url, xml)
     user_parameters = parse_response_coy(response)
     user_table = PrettyTable()

@@ -15,9 +15,9 @@ def _case(*args):
 
 def choice_thing():
     """  ф-я выбора значения """
-    path = "connections.ini"
+    PATH = "connections.ini"
     print("Текущие настройки:")
-    print(*ini.get_config_parameters(path, "DEFAULT"))
+    print(*ini.get_config_parameters(PATH, "DEFAULT"))
     print("\nКакие настройки подключения использовать:")
     try:
         answer = int(input("1-использовать текущие\n"
@@ -32,18 +32,18 @@ def choice_thing():
             break
         if _case(2):
             print("Выберите нужное соединение")
-            connection_name = ini.get_connections_list(path)
+            connection_name = ini.get_connections_list(PATH)
             try:
                 answer = int(input("Укажите номер соединения\n"))
-                parameters = ini.get_config_parameters(path, connection_name[answer - 1])
-                ini.update_default_section(path, parameters)
+                parameters = ini.get_config_parameters(PATH, connection_name[answer - 1])
+                ini.update_default_section(PATH, parameters)
                 print("Обновили default значения")
             except IndexError:
                 print("Нет сохраненных соединений, либо указали неверный номер")
             break
         if _case(3):
             print("Ввод нового соединения")
-            ini.create_new_section(path)
+            ini.create_new_section(PATH)
             break
         print("Указали некорректный вариант")
         break

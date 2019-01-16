@@ -123,11 +123,11 @@ def get_users_cards():
     """ Получение списка карточек клиента из БД """
     cards_list = {}
     param = []
-    sql_file = 'sql_requests/cards.sql'
+    SQL_FILE = 'sql_requests/cards.sql'
     user = Client()
     idn = user.set_idn()
     try:
-        request = prepare_sql_file(sql_file, "idn", idn)
+        request = prepare_sql_file(SQL_FILE, "idn", idn)
         db = My_db_Default("FORPOST")
         print('Подождите... формируется список карточек...')
         response = db.query(request)
@@ -150,10 +150,10 @@ def get_Fp_card_balance():
     """  получение списка карточек вместе со статусом и балансом в форпост """
     cards_list = {}
     param = []
-    sql_file = 'sql_requests/Fp_card_balance.sql'
+    SQL_FILE = 'sql_requests/Fp_card_balance.sql'
     try:
         deal_nr = input("Укажите номер контракта\n")
-        request = prepare_sql_file(sql_file, "contract_nr", deal_nr)
+        request = prepare_sql_file(SQL_FILE, "contract_nr", deal_nr)
         db = My_db_Default("FORPOST")
         print('Подождите... формируется таблица с данными...')
         response = db.query(request)
@@ -173,9 +173,9 @@ def get_Fp_card_balance():
 
 def get_user_fp_code_from_idn(idn):
     """  получение кода форпост через idn клиента """
-    sql_file = 'sql_requests/ppl_code.sql'
+    SQL_FILE = 'sql_requests/ppl_code.sql'
     try:
-        request = prepare_sql_file(sql_file, "idn", idn)
+        request = prepare_sql_file(SQL_FILE, "idn", idn)
         db = My_db_Default("FORPOST")
         response = db.query(request)
         for i in response:
