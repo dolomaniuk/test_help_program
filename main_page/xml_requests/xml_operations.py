@@ -42,7 +42,6 @@ def xml_replace(parse_xml, search_text, value, new_xml):
      """
     parse_xml.find(search_text).text = value
     parse_xml.write(new_xml)
-    log.info("Перезаписали xml файл")
 
 def xml_request_coy(url, xml):
     """Возвращает ответ на xml запрос"""

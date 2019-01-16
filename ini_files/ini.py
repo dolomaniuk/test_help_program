@@ -1,6 +1,11 @@
 import configparser
 import os
+import logging
 from prettytable import PrettyTable
+
+LOG_FORMAT = "%(asctime)s [%(levelname)s]\t [%(name)s]\t %(message)s"
+logging.basicConfig(filename="logs/request.log", format=LOG_FORMAT, datefmt='%H:%M:%S', filemode="w", level=logging.INFO)
+log = logging.getLogger("db_request")
 
 
 def _create_config(config, path):
@@ -34,7 +39,8 @@ def get_config_parameters(path, section):
         password = config.get(section, "PASSWORD")
         connection_parameters = section, server, port, sid, username, password
     except :
-        print("Не удалось определить параметры соединения " + section + "\n")
+        print(f"Не удалось определить параметры соединения {section}\n")
+        log.exception(f"Не удалось определить параметры соединения {section}")
         connection_parameters = create_new_section(path)
     finally:
         return connection_parameters
@@ -50,6 +56,7 @@ def update_setting(path, section, setting, value):
     config = get_config(path)
     config.set(section, setting, value)
     _write_config(config, path)
+    log.info(f"Обновили соединение {section}")
 
 
 def update_default_section(path, parameters):
@@ -82,12 +89,14 @@ def create_new_section(path):
     print("\nЗаписали новое подключение")
     get_config_parameters(path, section)
     connection_parameters = section, server, port, sid, username, password
+    log.info("Добавили новое соединение")
     return connection_parameters
 
 
 def _write_config(config, path):
     with open(path, "w") as config_file:
         config.write(config_file)
+    log.info("обновили конфиг")
 
 
 # Input connection's parameters
@@ -133,4 +142,5 @@ def get_connections_list(path):
                                  parameters[4] + " " + parameters[5]])
         i += 1
     print(connections_list)
+    log.info("Получили список соединений")
     return sections

@@ -60,12 +60,12 @@ def prepare_sql_file(sql_file, text_for_replace, value):
 def __select_status_request(db_obj, id):
     """ выводит статуса заявки """
     try:
-        request_list = db_obj.query(
-        f"select id, status from requests where ID = {id}").fetchone()
+        request_list = db_obj.query(f"select id, status from requests where ID = {id}").fetchone()
         print(request_list)
+        log. info("Получили статус заявки")
     except:
-        print("Не удалось выполнить запрос.")
-        # request_list = ''
+        print("Не удалось определить статус заявки")
+        log.exception("Не удалось определить статус заявки")
 
 
 def __select_status():
@@ -78,9 +78,11 @@ def __select_status():
         i += 1
     try:
         status_number = int(input("Укажите номер нового статуса\n"))
+        log.info("Выбрали новый статус")
     except ValueError:
         print("Указали неверный номер статуса.\nНа заявку будет"
               " установлен статус 'EXTERNAL_END'")
+        log.exception("Указали неверный номер статуса")
         status_number = 3
     return status[status_number - 1]
 
@@ -97,11 +99,11 @@ def change_status():
                      f"{str(id_request)}")
             db._connect.commit()
             __select_status_request(db, str(id_request))
-        except ValueError:
+        except :
             print("Указали неверное значение\n")
-        except IndexError:
-            print("Указали неверное значение\nСтатус не меняем")
+            log.exception()
         else:
+            log.error("что то передумали вводить...")
             break
 
 
@@ -115,12 +117,14 @@ def find_update():
     count_of_rows = request_list.fetchall()  # get list of rows
     if count_of_rows:
         print(*count_of_rows, sep='\n')
+        log.info("Нашли соответствие в БД")
     else:
         print('Не найден апдейт с описанием: ' + script_name)
 
 
 def get_users_cards():
     """ Получение списка карточек клиента из БД """
+    log.info("get_users_cards() enter")
     cards_list = {}
     param = []
     SQL_FILE = 'sql_requests/cards.sql'
@@ -129,7 +133,8 @@ def get_users_cards():
     try:
         request = prepare_sql_file(SQL_FILE, "idn", idn)
         db = My_db_Default("FORPOST")
-        print('Подождите... формируется список карточек...')
+        print('Подождите... формируется список карточек...\n'
+              'Может занять около минуты...')
         response = db.query(request)
         for i in response:
             param.append(i[1])          # номер счета
@@ -137,12 +142,16 @@ def get_users_cards():
             param.append(i[3])          # номер контракта
             cards_list[i[0]] = param    # номер карточки
             param = []
+        log.info("get_users_cards() exit")
     except ValueError:
         print("Указали неверное значение\n")
+        log.exception("Указали неверное значение\n")
     except TypeError:
+        log.exception(TypeError)
         pass
     if not cards_list.keys():
         print("У данного клиента нет активных карточек")
+        log.info("У данного клиента нет активных карточек")
     return cards_list
 
 
@@ -164,10 +173,13 @@ def get_Fp_card_balance():
             param.append(i[4])          # баланс в Fp
             cards_list[i[0]] = param    # номер карточки
             param = []
-    except ValueError:
+            log.info(f"Получили данные по контракту {deal_nr}")
+    except:
         print("Указали неверное значение\n")
+        log.exception()
     if not cards_list.keys():
         print("У данного контракта нет активных карточек")
+        log.info("У данного контракта нет активных карточек")
     return cards_list
 
 
@@ -180,7 +192,7 @@ def get_user_fp_code_from_idn(idn):
         response = db.query(request)
         for i in response:
             fp_code = str(i[0])
-        log.info("Получили fp_code=" + fp_code)
+        log.info(f"Получили fp_code= {fp_code}")
     except:
         print("Не удалось определить fp_code\n")
         fp_code = ''
