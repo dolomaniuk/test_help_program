@@ -53,6 +53,7 @@ def prepare_sql_file(sql_file, text_for_replace, value):
     with open(sql_file, 'r+', encoding='utf-8') as sql:
         for line in sql:
             sql_request += line.replace(text_for_replace, value)
+        sql.write()
         log.info("Прочитали sql запрос из файла: " + sql_file)
     return sql_request
 
@@ -198,3 +199,19 @@ def get_user_fp_code_from_idn(idn):
         fp_code = ''
         log.exception("Не удалось определить fp_code")
     return fp_code
+
+
+def get_cards_number_for_auto_credit():
+    """
+    :param vrc_pdt_mnemo: карточный продукт 'INSTANT_ISSUE_PURCHASE'
+    :param vrc_mnemo: карточный вариант 'PS_MC_ST_NFC'
+    :return: Группу точек выдачи, точку выдачи, номер карочки
+    """
+    request_list = []
+    cursor = My_db_Default("FORPOST")
+    query = """
+            
+            """
+    request_list = cursor.query(query).fetchone()
+    log.info(f"Получили точку выдачи и номер карточки для автокредита")
+    return request_list
