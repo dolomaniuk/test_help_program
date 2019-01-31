@@ -24,7 +24,7 @@ from prerequest.create_prerequest import request
 from check_status_card_in_sv.check_status_card_in_sv import check_balance_status_SV_FP, check_status_SV
 from coy.coy_operation import send_coy_request
 from main_page.check_nes_files import check_files
-from main_page.createHuman import create_human
+from main_page.create_human import create_human
 
 path = "connections.ini"
 
