@@ -2,6 +2,11 @@ from mimesis import Person
 import string
 import random
 import datetime
+import logging
+
+LOG_FORMAT = "%(asctime)s [%(levelname)s]\t [%(name)s]\t %(message)s"
+logging.basicConfig(filename="logs/request.log", format=LOG_FORMAT, datefmt='%H:%M:%S', filemode="w", level=logging.INFO)
+log = logging.getLogger("create_human")
 
 # Создаем экземпляр класса-провайдера с данными для исландского языка.
 # print('Who do you want to create:', '1: ru', '2: eng', sep='\n')
@@ -32,6 +37,7 @@ def centuryFromYear(year):
         centry = year // 100
     else:
         centry = year // 100 + 1
+    log.info("Определили век: " + str(centry))
     return centry
 
 
@@ -49,6 +55,7 @@ def check_number(idn):
         else:
             sum += (ord(idn[r]) - 55) * key[r]
     sum = sum % 10
+    log.info("Определили контрольную сумму:" + str(sum))
     return sum
 
 
@@ -104,6 +111,7 @@ def generate_id_passport():
     sex = 'муж' if sex == 0 else 'жен'
     info_id = {'sex': sex, 'd_birth': id_passport[1:3], 'm_birth': id_passport[3:5], 'y_birth': str(y_birth),
                'idn': id_passport}
+    log.info("Сгенерировали пол, дату рождения и личный номер")
     return info_id
 
 def create_human(n):
@@ -112,10 +120,12 @@ def create_human(n):
     :param n: язык генерации данных
     :return: сгенерированные фейковые данные
     """
+    log.info("Генерируем тестовые данные")
     if n == 1:
         person = Person('ru')
     else:
         person = Person('en')
+    log.info("person: " + str(person))
 
     client_info = generate_id_passport()
 
