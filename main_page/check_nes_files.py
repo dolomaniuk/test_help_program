@@ -3,8 +3,8 @@ import os
 
 def check_files():
     """ проверка наличия необходимых файлов"""
-    db_dir = 'sql_requests\\'
-    xml_dir = 'xml_request\\'
+    db_dir = 'sql_requests/'
+    xml_dir = 'xml_requests/'
     db_requests = [
         'cards.sql',
         'Fp_card_balance.sql',

@@ -53,7 +53,6 @@ def prepare_sql_file(sql_file, text_for_replace, value):
     with open(sql_file, 'r+', encoding='utf-8') as sql:
         for line in sql:
             sql_request += line.replace(text_for_replace, value)
-        sql.write()
         log.info("Прочитали sql запрос из файла: " + sql_file)
     return sql_request
 
