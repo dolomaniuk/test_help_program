@@ -14,6 +14,7 @@ from prerequest.create_prerequest import request
 from check_status_card_in_sv.check_status_card_in_sv import check_balance_status_SV_FP, check_status_SV
 from coy.coy_operation import send_coy_request
 from main_page.check_nes_files import check_files
+from main_page.createHuman import create_human
 
 path = "connections.ini"
 
@@ -45,6 +46,7 @@ while 1:
         5. Статус карточек клиента в SV
         6. Баланс карточки по номеру договора
         7. Инфа о клиенте в СОУ
+        8. Генерация тестовых данных
         """)
     try:
         choice = int(input('Выберите один из вариантов\n'))
@@ -105,6 +107,18 @@ while 1:
                 send_coy_request()
             except:
                 print("Не удалось выполнить команду")
+            finally:
+                break
+        if _case(8):
+            print("Генерация тестовых данных")
+            create_human(1)
+            keys = str(input('Press "Space" and next "Enter" to repeat\nor "Enter" to exit\n'))
+            try:
+                while keys[0] == ' ':
+                    create_human(1)
+                    keys = input('Press "Space" and next "Enter" to create new client again\nor "Enter" to exit\n')
+            except:
+                pass
             finally:
                 break
         print("Указали некорректный вариант")
