@@ -24,7 +24,7 @@ def __create_xml_coy():
         tree = et.parse(XML_FILE)
         tree.find('.//TerminalTime').text = current_time
         tree.find('.//BankId').text = fp_code
-        tree.write('xml_request\COY_find_info.xml')
+        tree.write('xml_requests\COY_find_info.xml')
     except FileNotFoundError:
         log.exception(FileNotFoundError)
         pass
@@ -54,45 +54,46 @@ def send_coy_request():
     url = __get_url_coy()
     xml = my_xml.xml_read(XML_FILE)
     response = my_xml.xml_request_coy(url, xml)
-    user_parameters = parse_response_coy(response)
-    user_table = PrettyTable()
-    column_names = ["Параметр", "Значение"]
-    user_table.add_column(column_names[0], ["Id", "FIO", "Address", "Phone", "Email", "DateOfBirth", "Sex", "BankId",
-                                            "PersonalNo", "Document", "Options"])
-    second_column = []
-    for i in user_parameters:
-        second_column.append(i)
-    user_table.add_column(column_names[1], second_column)
-    print(user_table)
+    print(response)
+    # user_parameters = parse_response_coy(response)
+    # user_table = PrettyTable()
+    # column_names = ["Параметр", "Значение"]
+    # user_table.add_column(column_names[0], ["Id", "FIO", "Address", "Phone", "Email", "DateOfBirth", "Sex", "BankId",
+    #                                         "PersonalNo", "Document", "Options"])
+    # second_column = []
+    # for i in user_parameters:
+    #     second_column.append(i)
+    # user_table.add_column(column_names[1], second_column)
+    # print(user_table)
     log.info("Вывели инфу о клиенте")
     return response
 
 
-def parse_response_coy(response):
-    """
-    вывод ответа из СОУ в читаемый вид
-    :param response: xml
-    :return: преобразованная инфа из СОУ
-    """
-    xml = et.fromstring(response)
-    Id = xml.find('.//Id').text
-    FIO = xml.find('.//FIO').text
-    Address = xml.find('.//Address').text
-    Phone = xml.find('.//Phone').text
-    try:
-        Email = xml.find('.//Email').text
-    except:
-        Email = "no email"
-    DateOfBirth = xml.find('.//DateOfBirth').text
-    Sex = xml.find('.//Sex').text
-    BankId = xml.find('.//BankId').text
-    PersonalNo = xml.find('.//PersonalNo').text
-    Document = xml.find('.//Document').text
-    try:
-        Options = xml.find('.//Options').text
-    except:
-        Options = "no options"
-
-    user = [Id, FIO, Address, Phone, Email, DateOfBirth, Sex, BankId, PersonalNo, Document, Options]
-    log.info("Преобразовали ответ из СОУ в нормальный вид")
-    return user
+# def parse_response_coy(response):
+#     """
+#     вывод ответа из СОУ в читаемый вид
+#     :param response: xml
+#     :return: преобразованная инфа из СОУ
+#     """
+#     xml = et.fromstring(response)
+#     Id = xml.find('.//Id').text
+#     FIO = xml.find('.//FIO').text
+#     Address = xml.find('.//Address').text
+#     Phone = xml.find('.//Phone').text
+#     try:
+#         Email = xml.find('.//Email').text
+#     except:
+#         Email = "no email"
+#     DateOfBirth = xml.find('.//DateOfBirth').text
+#     Sex = xml.find('.//Sex').text
+#     BankId = xml.find('.//BankId').text
+#     PersonalNo = xml.find('.//PersonalNo').text
+#     Document = xml.find('.//Document').text
+#     try:
+#         Options = xml.find('.//Options').text
+#     except:
+#         Options = "no options"
+#
+#     user = [Id, FIO, Address, Phone, Email, DateOfBirth, Sex, BankId, PersonalNo, Document, Options]
+#     log.info("Преобразовали ответ из СОУ в нормальный вид")
+#     return user

@@ -51,7 +51,7 @@ def xml_request_coy(url, xml):
         headers = {'Content-Type': 'application/x-www-form-urlencoded'}
         try:
             response = requests.post(url, data=param_data, headers=headers).text
-            log.info("Получили ответ на xml запрос")
+            log.info("Получили ответ на xml запрос: " + response)
         except:
             log.exception()
             pass
